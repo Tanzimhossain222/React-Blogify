@@ -3,7 +3,7 @@
 
 ## Features
 
-- [] login
+- [x] login
 - [] register
 - [] private route
 - [] Setting up Auth Provider

@@ -1,8 +1,13 @@
+import LoginPage from "./page/LoginPage";
+import AuthProvider from "./providers/AuthProvider";
+
 const App = () => {
   return (
-    <div>
-      <h1>React App</h1>
-    </div>
+    <>
+    <AuthProvider>
+      <LoginPage />
+    </AuthProvider>
+    </>
   );
 };
 
