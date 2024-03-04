@@ -17,13 +17,6 @@ const ProfileImage = () => {
     fileUploadRef.current.click();
   };
 
-  // const updateImageDisplay =async (e) => {
-  //   const formData = new FormData();
-  //   for (const file of e.target.files) {
-  //     formData.append("avatar", file);
-  //   }
-  // }
-
   return (
     <div className="relative mb-8 max-h-[180px] max-w-[180px] h-[120px] w-[120px] rounded-full lg:mb-11 lg:max-h-[218px] lg:max-w-[218px]">
       <div className="w-full h-full bg-orange-600 text-white grid place-items-center text-5xl rounded-full">

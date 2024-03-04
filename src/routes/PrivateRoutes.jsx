@@ -1,7 +1,6 @@
 import { Navigate, Outlet } from "react-router-dom";
 import Layout from "../components/layout/Layout";
 import useAuth from "../hooks/useAuth";
-import ProfileProvider from "../providers/ProfileProvider";
 
 const PrivateRoutes = () => {
   const { auth, loading } = useAuth();
@@ -14,11 +13,9 @@ const PrivateRoutes = () => {
     <div>
       {auth?.accessToken ? (
         <>
-          <ProfileProvider>
-            <Layout>
-              <Outlet />
-            </Layout>
-          </ProfileProvider>
+          <Layout>
+            <Outlet />
+          </Layout>
         </>
       ) : (
         <Navigate to="/login" />

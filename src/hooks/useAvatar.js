@@ -1,5 +1,6 @@
 
 const useAvatar = (user) => {
+
     let userAvatar;
 
     if (user?.avatar) {

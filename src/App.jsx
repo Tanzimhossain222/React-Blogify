@@ -7,12 +7,13 @@ import ProfilePage from "./page/ProfilePage";
 import RegisterPage from "./page/RegisterPage";
 import SearchPage from "./page/SearchPage";
 import SingleBlogPage from "./page/SingleBlogPage";
+import ProfileProvider from "./providers/ProfileProvider";
 import PrivateRoutes from "./routes/PrivateRoutes";
 
 const App = () => {
   return (
     <>
-      <>
+      <ProfileProvider>
         <Routes>
           <Route element={<PrivateRoutes />}>
             <Route path="/" element={<HomePage />} />
@@ -26,7 +27,7 @@ const App = () => {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
-      </>
+      </ProfileProvider>
     </>
   );
 };

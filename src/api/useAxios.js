@@ -36,7 +36,6 @@ const useAxios = () => {
 
                     try {
                         const refreshToken = auth?.refreshToken;
-                        console.log(refreshToken);
                         const res = await axiosInstance.post('/auth/refresh-token', {
                             refreshToken,
                         });

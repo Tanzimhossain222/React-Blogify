@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import LoadingSkeleton from "../common/LoadingSkeleton";
 import ProfileBlogs from "../components/blogs/ProfileBlogs";
 import ProfileInfo from "../components/profile/ProfileInfo";
 import useAuth from "../hooks/useAuth";
@@ -19,7 +20,7 @@ const ProfilePage = () => {
   }, [user.id, fetchProfileData]);
 
   if (state?.loading) {
-    return <div>Loading...</div>;
+    return <LoadingSkeleton />;
   }
 
   return (

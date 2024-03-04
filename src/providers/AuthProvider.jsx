@@ -2,17 +2,20 @@ import PropTypes from "prop-types";
 import { useEffect, useReducer, useState } from "react";
 import actions from "../actions";
 import { AuthContext } from "../context";
+import useLocalStorage from "../hooks/useLocalStorage";
 import { AuthReducer, initialState } from "../reducers/AuthReducer";
 
 const AuthProvider = ({ children }) => {
   const [auth, dispatch] = useReducer(AuthReducer, initialState);
   const [loading, setLoading] = useState(true);
+  const { setLocalStorage, getLocalStorage } = useLocalStorage();
 
   // Check if the user is already logged in
   useEffect(() => {
-    const accessToken = localStorage.getItem("accessToken");
-    const refreshToken = localStorage.getItem("refreshToken");
-    const user = localStorage.getItem("user");
+    console.log("checking local storage");
+    const accessToken = getLocalStorage("accessToken");
+    const refreshToken = getLocalStorage("refreshToken");
+    const user = getLocalStorage("user", true);
 
     if (accessToken && refreshToken && user) {
       dispatch({
@@ -20,7 +23,7 @@ const AuthProvider = ({ children }) => {
         payload: {
           accessToken,
           refreshToken,
-          user: JSON.parse(user),
+          user,
         },
       });
     }
@@ -33,14 +36,15 @@ const AuthProvider = ({ children }) => {
       user,
       token: { accessToken, refreshToken },
     } = userData;
+
     // Set tokens in local storage
-    localStorage.setItem("user", JSON.stringify(user));
-    localStorage.setItem("accessToken", accessToken);
-    localStorage.setItem("refreshToken", refreshToken);
+    setLocalStorage("user", user, true);
+    setLocalStorage("accessToken", accessToken);
+    setLocalStorage("refreshToken", refreshToken);
 
     // Set refresh token expiry date
     const refreshTokenExpiresAt = Date.now() + 24 * 3600 * 1000; // 1 day in milliseconds;
-    localStorage.setItem("refreshTokenExpiresAt", refreshTokenExpiresAt);
+    setLocalStorage("refreshTokenExpiresAt", refreshTokenExpiresAt);
 
     dispatch({
       type: actions.Auth.login,
@@ -61,7 +65,8 @@ const AuthProvider = ({ children }) => {
       payload: { accessToken },
     });
 
-    localStorage.setItem("accessToken", accessToken);
+    // Set the new access token in local storage
+    setLocalStorage("accessToken", accessToken);
   };
 
   /*
@@ -71,7 +76,7 @@ const AuthProvider = ({ children }) => {
    *
    */
   useEffect(() => {
-    const refreshTokenExpiresAt = localStorage.getItem("refreshTokenExpiresAt");
+    const refreshTokenExpiresAt = getLocalStorage("refreshTokenExpiresAt");
     if (refreshTokenExpiresAt) {
       const currentTime = Date.now();
       if (currentTime > refreshTokenExpiresAt) {

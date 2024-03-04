@@ -21,7 +21,8 @@ const AuthReducer = (state = initialState, action) => {
             localStorage.removeItem('user');
             localStorage.removeItem('accessToken');
             localStorage.removeItem('refreshToken');
-            localStorage.removeItem('refreshTokenExpiresAt'); // remove refresh token expiry date 
+            localStorage.removeItem('refreshTokenExpiresAt'); // remove refresh token expiry date
+
             return {
                 ...state,
                 user: null,
@@ -37,6 +38,8 @@ const AuthReducer = (state = initialState, action) => {
             }
         }
 
+        default:
+            return state;
     }
 }
 

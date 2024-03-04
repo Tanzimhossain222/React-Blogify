@@ -1,8 +1,8 @@
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
-import Field from "../../../common/Field";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import axiosInstance from "../../../api/axiosInstance";
+import Field from "../../../common/Field";
 import useAuth from "../../../hooks/useAuth";
 
 const LoginForm = () => {
@@ -13,6 +13,8 @@ const LoginForm = () => {
     formState: { errors },
     setError,
   } = useForm();
+
+  const navigate = useNavigate();
 
   const handleSubmitForm = async (formData) => {
     try {
@@ -30,8 +32,13 @@ const LoginForm = () => {
 
       toast.success("Login successful", {
         position: "top-right",
-        autoClose: 1000,
+        autoClose: 500,
       });
+
+      // Redirect to home page after 1200ms
+      setTimeout(() => {
+        navigate("/");
+      }, 1200);
     } catch (err) {
       setError("root.random", {
         type: "manual",

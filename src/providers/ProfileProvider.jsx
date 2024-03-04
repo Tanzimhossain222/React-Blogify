@@ -3,6 +3,7 @@ import { useMemo, useReducer } from "react";
 import actions from "../actions";
 import useAxios from "../api/useAxios";
 import { ProfileContext } from "../context";
+import useLocalStorage from "../hooks/useLocalStorage";
 import {
   initialProfileState,
   profileReducer,
@@ -11,6 +12,7 @@ import {
 const ProfileProvider = ({ children }) => {
   const [state, dispatch] = useReducer(profileReducer, initialProfileState);
   const { axiosInstance } = useAxios();
+  const { setLocalStorage, getLocalStorage } = useLocalStorage();
 
   const fetchProfileData = useMemo(
     () => async (id) => {
@@ -28,8 +30,8 @@ const ProfileProvider = ({ children }) => {
               lastName: res.data.lastName,
               avatar: res.data.avatar,
               bio: res.data.bio,
+              favourites: res.data.favourites,
             },
-            favourites: res.data.favourites,
             blogs: res.data.blogs,
           };
 
@@ -66,8 +68,6 @@ const ProfileProvider = ({ children }) => {
         },
       });
 
-      console.log(res.data.user.avatar);
-
       if (res.status !== 200) {
         throw new Error(res.data.message);
       }
@@ -76,6 +76,11 @@ const ProfileProvider = ({ children }) => {
         type: actions.profile.IMAGE_UPLOADED,
         payload: { avatar: res.data.user.avatar },
       });
+
+      // Update localStorage
+      const user = getLocalStorage("user", true);
+      user.avatar = res.data.user.avatar;
+      setLocalStorage("user", user, true);
 
       return res.data.avatar;
     } catch (error) {
@@ -86,10 +91,42 @@ const ProfileProvider = ({ children }) => {
     }
   };
 
+  //handle Edit user data
+  const handleUserDataEdit = async (data) => {
+    dispatch({ type: actions.profile.DATA_FETCHING });
+
+    try {
+      const res = await axiosInstance.patch("/profile", data);
+
+      if (res.status !== 200) {
+        throw new Error(res.data.message);
+      }
+
+      dispatch({
+        type: actions.profile.USER_DATA_EDITED,
+        payload: res.data.user,
+      });
+
+      // Update localStorage
+      setLocalStorage("user", res.data.user, true);
+    } catch (err) {
+      dispatch({
+        type: actions.profile.DATE_FETCH_ERROR,
+        payload: err.message,
+      });
+    }
+  };
+
   return (
     <>
       <ProfileContext.Provider
-        value={{ state, dispatch, fetchProfileData, handleImageChange }}
+        value={{
+          state,
+          dispatch,
+          fetchProfileData,
+          handleImageChange,
+          handleUserDataEdit,
+        }}
       >
         {children}
       </ProfileContext.Provider>

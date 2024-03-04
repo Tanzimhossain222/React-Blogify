@@ -5,7 +5,6 @@ const initialProfileState = {
     blogs: [],
     loading: false,
     error: null,
-    favourites: [],
 }
 
 const profileReducer = (state = initialProfileState, action) => {
@@ -23,7 +22,6 @@ const profileReducer = (state = initialProfileState, action) => {
                 loading: false,
                 user: action.payload.user,
                 blogs: action.payload.blogs,
-                favourites: action.payload.favourites,
             }
         }
 
@@ -31,6 +29,7 @@ const profileReducer = (state = initialProfileState, action) => {
             return {
                 ...state,
                 user: action.payload,
+                loading: false,
             }
 
         case actions.profile.IMAGE_UPLOADED: {
