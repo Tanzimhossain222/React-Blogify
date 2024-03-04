@@ -21,12 +21,19 @@ const AuthReducer = (state = initialState, action) => {
             localStorage.removeItem('user');
             localStorage.removeItem('accessToken');
             localStorage.removeItem('refreshToken');
-            localStorage.removeItem('refreshTokenExpiresAt'); // remove refresh token expiry date
+            localStorage.removeItem('refreshTokenExpiresAt'); // remove refresh token expiry date 
             return {
                 ...state,
                 user: null,
                 accessToken: null,
-                refreshToken: null
+                refreshToken: null,
+            }
+        }
+
+        case actions.Auth.setAccessToken: {
+            return {
+                ...state,
+                accessToken: action.payload.accessToken,
             }
         }
 

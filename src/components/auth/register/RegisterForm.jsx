@@ -1,48 +1,71 @@
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
-import Field from "../../../common/Field";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import axiosInstance from "../../../api/axiosInstance";
-import useAuth from "../../../hooks/useAuth";
+import Field from "../../../common/Field";
 
-const LoginForm = () => {
-  const { login } = useAuth();
+const RegisterForm = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
     setError,
   } = useForm();
+  const navigate = useNavigate();
 
   const handleSubmitForm = async (formData) => {
     try {
-      const response = await axiosInstance.post("/auth/login", formData);
+      const res = await axiosInstance.post("/auth/register", formData);
+      console.log(res);
 
-      if (response.status !== 200) {
+      if (res.status !== 201) {
         throw new Error("An error occurred");
       }
 
-      const { token, user } = response.data;
-
-      if (token) {
-        login({ token, user });
-      }
-
-      toast.success("Login successful", {
+      toast.success("Account created successfully", {
         position: "top-right",
-        autoClose: 1000,
+        autoClose: 500,
       });
+
+      // Redirect to login page after 1 second
+      setTimeout(() => {
+        navigate("/login");
+      }, 1400);
     } catch (err) {
       setError("root.random", {
         type: "manual",
-        message: `User with email ${formData.email} does not exist or password is incorrect. Please try again.`,
+        message: `An error occurred. Please try again.`,
       });
     }
   };
 
   return (
     <>
-      <form onSubmit={handleSubmit(handleSubmitForm)}>
+      <form autoComplete="off" onSubmit={handleSubmit(handleSubmitForm)}>
+        <Field label="First Name" htmlFor="firstName" error={errors.firstName}>
+          <input
+            type="text"
+            id="firstName"
+            name="firstName"
+            className="w-full p-3 bg-[#030317] border border-white/20 rounded-md focus:outline-none focus:border-indigo-500"
+            {...register("firstName", {
+              required: "First Name is required",
+            })}
+          />
+        </Field>
+
+        <Field label="Last Name" htmlFor="lastName" error={errors.lastName}>
+          <input
+            type="text"
+            id="lastName"
+            name="lastName"
+            className="w-full p-3 bg-[#030317] border border-white/20 rounded-md focus:outline-none focus:border-indigo-500"
+            {...register("lastName", {
+              required: "Last Name is required",
+            })}
+          />
+        </Field>
+
         <Field label="Email" htmlFor="email" error={errors.email}>
           <input
             type="email"
@@ -86,14 +109,14 @@ const LoginForm = () => {
             type="submit"
             className="w-full bg-indigo-600 text-white p-3 rounded-md hover:bg-indigo-700 transition-all duration-200"
           >
-            Login
+            Create Account
           </button>
         </Field>
 
         <p className="text-center">
-          Don't have an account?{" "}
-          <Link to="/register" className="text-indigo-600 hover:underline">
-            Register
+          Already have account?{" "}
+          <Link to="/login" className="text-indigo-600 hover:underline">
+            Login
           </Link>
         </p>
       </form>
@@ -101,4 +124,4 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+export default RegisterForm;

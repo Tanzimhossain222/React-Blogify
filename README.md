@@ -1,17 +1,16 @@
 # React Blogify
 
-
 ## Features
 
 - [x] login
-- [] register
-- [] private route
-- [] Setting up Auth Provider
-- [] JWT token
-- [] logout
-- [] Header
-- [] Profile Page - Bio and Image Update
-- [] Listing Down My Posts in the Profile Page
+- [x] register
+- [x] private route
+- [x] Setting up Auth Provider
+- [x] JWT token
+- [x] logout
+- [x] Header
+- [x] Profile Page - Bio and Image Update
+- [x] Listing Down My Posts in the Profile Page
 - [] Create New blog post
 - [] Listing Down All the Posts in the Home Page
 - [] like and Unlike

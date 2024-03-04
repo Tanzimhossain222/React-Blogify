@@ -1,18 +1,19 @@
 import PropTypes from "prop-types";
-import { useEffect, useReducer } from "react";
+import { useEffect, useReducer, useState } from "react";
 import actions from "../actions";
 import { AuthContext } from "../context";
 import { AuthReducer, initialState } from "../reducers/AuthReducer";
 
 const AuthProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(AuthReducer, initialState);
+  const [auth, dispatch] = useReducer(AuthReducer, initialState);
+  const [loading, setLoading] = useState(true);
 
   // Check if the user is already logged in
   useEffect(() => {
     const accessToken = localStorage.getItem("accessToken");
     const refreshToken = localStorage.getItem("refreshToken");
     const user = localStorage.getItem("user");
-  
+
     if (accessToken && refreshToken && user) {
       dispatch({
         type: actions.Auth.login,
@@ -23,6 +24,7 @@ const AuthProvider = ({ children }) => {
         },
       });
     }
+    setLoading(false);
   }, []);
 
   // handle login action
@@ -36,7 +38,7 @@ const AuthProvider = ({ children }) => {
     localStorage.setItem("accessToken", accessToken);
     localStorage.setItem("refreshToken", refreshToken);
 
-    //remove in 30 seconds
+    // Set refresh token expiry date
     const refreshTokenExpiresAt = Date.now() + 24 * 3600 * 1000; // 1 day in milliseconds;
     localStorage.setItem("refreshTokenExpiresAt", refreshTokenExpiresAt);
 
@@ -49,6 +51,17 @@ const AuthProvider = ({ children }) => {
   // handle logout action
   const logout = () => {
     dispatch({ type: actions.Auth.logout });
+  };
+
+  // access token handler if axios interceptor refreshes the token
+  const setAccessToken = (accessToken) => {
+    console.log(accessToken);
+    dispatch({
+      type: actions.Auth.setAccessToken,
+      payload: { accessToken },
+    });
+
+    localStorage.setItem("accessToken", accessToken);
   };
 
   /*
@@ -68,7 +81,9 @@ const AuthProvider = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ state, login, logout }}>
+    <AuthContext.Provider
+      value={{ auth, login, logout, loading, setAccessToken }}
+    >
       {children}
     </AuthContext.Provider>
   );
