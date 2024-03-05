@@ -1,21 +1,26 @@
+import PropTypes from "prop-types";
 import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import Field from "../../../common/Field";
 import useBlogs from "../../../hooks/useBlogs";
 
-const BlogForm = () => {
+const BlogForm = ({ EditBlog = null }) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-    setError,
     reset,
   } = useForm();
 
-  const { createBlog } = useBlogs();
+  const [isEdit] = useState(EditBlog ? true : false);
+  const { createBlog, editBlog } = useBlogs();
 
-  const [imagePreview, setImagePreview] = useState(null);
+  const [imagePreview, setImagePreview] = useState(
+    EditBlog ? EditBlog.thumbnail : null
+  );
 
+  const navigate = useNavigate();
   const fileUploadRef = useRef(null);
 
   const handleImageUpload = () => {
@@ -38,9 +43,9 @@ const BlogForm = () => {
     fileUploadRef.current.value = "";
   };
 
-  const handleFormSubmit = (formData) => {
+  const handleFormSubmit = async (formData) => {
     let blogData = new FormData();
-
+    let BlogInfo;
     // Add title, content, and tags to formData
     blogData.append("title", formData.title);
     blogData.append("content", formData.content);
@@ -51,11 +56,19 @@ const BlogForm = () => {
       blogData.append("thumbnail", fileUploadRef.current.files[0]);
     }
 
-    createBlog(blogData);
+    // check if it is edit or create
+    if (!isEdit) {
+      BlogInfo = await createBlog(blogData);
+      reset();
+      setImagePreview(null);
+    } else {
+      BlogInfo = await editBlog(blogData, EditBlog.id);
+    }
 
-    //clear the form
-    reset();
-    setImagePreview(null);
+    if (BlogInfo) {
+      const id = BlogInfo.id;
+      navigate(`/singleBlog/${id}`);
+    }
   };
 
   return (
@@ -126,6 +139,7 @@ const BlogForm = () => {
           id="title"
           name="title"
           placeholder="Enter your blog title"
+          defaultValue={isEdit ? EditBlog.title : ""}
           {...register("title", { required: "Title is required" })}
         />
       </Field>
@@ -136,6 +150,7 @@ const BlogForm = () => {
           className="w-full p-3 text-red-50 "
           id="tags"
           name="tags"
+          defaultValue={isEdit ? EditBlog.tags : ""}
           placeholder="Your Comma Separated Tags Ex. JavaScript, React, Node, Express,"
           {...register("tags", { required: "Tags are required" })}
         />
@@ -147,6 +162,7 @@ const BlogForm = () => {
           name="content"
           placeholder="Write your blog content"
           rows="8"
+          defaultValue={isEdit ? EditBlog.content : ""}
           {...register("content", { required: "Content is required" })}
         ></textarea>
       </Field>
@@ -156,11 +172,15 @@ const BlogForm = () => {
           type="submit"
           className="bg-indigo-600 text-white px-6 py-2 md:py-3 rounded-md hover:bg-indigo-700 transition-all duration-200"
         >
-          Create Blog
+          {isEdit ? "Update Blog" : "Create Blog"}
         </button>
       </Field>
     </form>
   );
+};
+
+BlogForm.propTypes = {
+  EditBlog: PropTypes.object,
 };
 
 export default BlogForm;

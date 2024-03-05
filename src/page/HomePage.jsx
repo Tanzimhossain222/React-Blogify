@@ -1,10 +1,7 @@
 import BlogLists from "../components/blogs/BlogLists";
 import BlogSlider from "../components/blogs/BlogSlider";
-import useAuth from "../hooks/useAuth";
 
 const HomePage = () => {
-  const { auth } = useAuth();
-
   return (
     <main>
       <section>

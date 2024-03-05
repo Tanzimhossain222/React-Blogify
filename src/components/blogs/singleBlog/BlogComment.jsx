@@ -7,7 +7,7 @@ const getCommentAvatar = (user) => {
     return user?.firstName?.charAt(0);
   }
 };
-
+import PropTypes from "prop-types";
 const BlogComment = ({ comments = [] }) => {
   return (
     <section id="comments">
@@ -61,6 +61,10 @@ const BlogComment = ({ comments = [] }) => {
       </div>
     </section>
   );
+};
+
+BlogComment.propTypes = {
+  comments: PropTypes.array,
 };
 
 export default BlogComment;

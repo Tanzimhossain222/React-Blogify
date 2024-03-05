@@ -5,6 +5,7 @@ const initialProfileState = {
     blogs: [],
     loading: false,
     error: null,
+    singleBlog: null,
 }
 
 const profileReducer = (state = initialProfileState, action) => {

@@ -3,6 +3,7 @@ import commentIcon from "../../../assets/icons/comment.svg";
 import favouriteIcon from "../../../assets/icons/heart-filled.svg";
 import unFavouriteIcon from "../../../assets/icons/heart.svg";
 import likeIcon from "../../../assets/icons/like.svg";
+import PropTypes from "prop-types";
 
 const SingleBlogAction = ({ singleBlog }) => {
   const [toggleFav, setToggleFav] = useState(false);
@@ -33,6 +34,10 @@ const SingleBlogAction = ({ singleBlog }) => {
       </ul>
     </div>
   );
+};
+
+SingleBlogAction.propTypes = {
+  singleBlog: PropTypes.object,
 };
 
 export default SingleBlogAction;

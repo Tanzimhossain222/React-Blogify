@@ -1,15 +1,28 @@
-import { useState } from "react";
-import axiosInstance from "../api/axiosInstance";
+// import { useState } from "react";
+// import axiosInstance from "../api/axiosInstance";
 
-const useBlogApi = (category='') => {
-    const [blogs, setBlogs] = useState([]);
+// const useBlogApi = (category='') => {
+//     const [blogs, setBlogs] = useState([]);
+//     const [singleBlog, setSingleBlog] = useState({});
 
-    const getBlogs = async (category)=>{
-        if(category){
-            const res = await axiosInstance.get(`/blogs/${category}?limit=4&page=1`);
-            setBlogs(res.data?.blogs);
-        }
+//     //fetch single blog
+//     const fetchSingleBlog = async (id) => {
+//         try {
+//             const res = await axiosInstance.get(`/blogs/${id}`);
+//             setSingleBlog(res.data);
+//         } catch (err) {
+//             console.log(err);
+//         }
+//     };
 
-    }
+//     //fetch all blogs 
+//     //Todo add category filter
 
-}
+
+
+//     return { blogs, singleBlog, fetchSingleBlog };
+
+
+    
+
+// }

@@ -1,6 +1,7 @@
 import DOMPurify from "dompurify";
 import useAvatar from "../../../hooks/useAvatar";
 import DateFormate from "../../../utils/dateTimeFormate";
+import PropTypes from "prop-types";
 
 const BlogContent = ({ singleBlog }) => {
   const authorAvatar = useAvatar(singleBlog?.author);
@@ -62,6 +63,10 @@ const BlogContent = ({ singleBlog }) => {
       ></div>
     </div>
   );
+};
+
+BlogContent.propTypes = {
+  singleBlog: PropTypes.object,
 };
 
 export default BlogContent;

@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import threeDotsIcon from "../../assets/icons/3dots.svg";
+import useAuth from "../../hooks/useAuth";
 import useAvatar from "../../hooks/useAvatar";
 import DateFormate from "../../utils/dateTimeFormate";
 import BlogAction from "./BlogAction";
@@ -10,6 +11,9 @@ const BlogCard = ({ blog }) => {
   const authorAvatar = useAvatar(blog?.author);
   const [actionMenu, setActionMenu] = useState(false);
   const navigation = useNavigate();
+  const { auth } = useAuth();
+
+  const isMe = blog?.author?.id === auth?.user?.id;
 
   const handleProfileClick = (event) => {
     event.stopPropagation();
@@ -71,15 +75,51 @@ const BlogCard = ({ blog }) => {
         </div>
 
         {/* <!-- Action Buttons --> */}
-        <div
-          className="absolute right-0 top-0"
-          onClick={() => setActionMenu(!actionMenu)}
-        >
-          <button>
-            <img src={threeDotsIcon} alt="3dots of Action" />
-          </button>
-          {actionMenu && <BlogAction />}
-        </div>
+
+        {isMe && (
+          <div
+            className="absolute right-0 top-0"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button>
+              <img
+                src={threeDotsIcon}
+                alt="3dots of Action"
+                onClick={(e) => {
+                  setActionMenu(!actionMenu);
+                  e.stopPropagation();
+                }}
+              />
+            </button>
+            {actionMenu && <BlogAction blog={blog} />}
+
+            {/* {actionMenu && (
+                <div className="action-modal-container">
+                <button
+                  className="action-menu-item hover:text-lwsGreen"
+                  onClick={(e) => {
+                    console.log("Edit clicked");
+                    e.stopPropagation();
+                  }}
+                >
+                  <img src={editIcon} alt="Edit" />
+                  Edit
+                </button>
+                <button
+                  className="action-menu-item hover:text-red-500"
+                  onClick={(e) => {
+                    console.log("Delete clicked");
+                    e.stopPropagation();
+                  }}
+                >
+                  <img src={deleteIcon} alt="Delete" />
+                  Delete
+                </button>
+              </div>
+              
+            )} */}
+          </div>
+        )}
       </div>
     </div>
   );

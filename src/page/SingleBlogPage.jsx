@@ -1,25 +1,20 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import useAxios from "../api/useAxios";
 import BlogComment from "../components/blogs/singleBlog/BlogComment";
 import BlogContent from "../components/blogs/singleBlog/BlogContent";
 import SingleBlogAction from "../components/blogs/singleBlog/SingleBlogAction";
+import useBlogs from "../hooks/useBlogs";
 
 const SingleBlogPage = () => {
   const { blogId } = useParams();
-  const id = blogId;
-
-  const { axiosInstance } = useAxios();
-  const [singleBlog, setSingleBlog] = useState({});
+  const { fetchSingleBlog, state } = useBlogs();
 
   useEffect(() => {
-    const getBlog = async () => {
-      const res = await axiosInstance.get(`/blogs/${id}`);
+    fetchSingleBlog(blogId);
+  }, [blogId, fetchSingleBlog]);
 
-      setSingleBlog(res.data);
-    };
-    getBlog();
-  }, [axiosInstance, id]);
+
+  const { singleBlog } = state;
 
   return (
     <div>

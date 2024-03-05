@@ -1,5 +1,4 @@
 // LoadingSkeleton.js
-import React from "react";
 
 const LoadingSkeleton = () => {
   return (
