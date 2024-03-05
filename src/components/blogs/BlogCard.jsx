@@ -1,16 +1,24 @@
+import PropTypes from "prop-types";
+import { useState } from "react";
+import threeDotsIcon from "../../assets/icons/3dots.svg";
 import useAvatar from "../../hooks/useAvatar";
+import DateFormate from "../../utils/dateTimeFormate";
+import BlogAction from "./BlogAction";
 
 const BlogCard = ({ blog }) => {
-
   const authorAvatar = useAvatar(blog?.author);
+  const [actionMenu, setActionMenu] = useState(false);
+
   return (
     <div className="blog-card">
       <img
         className="blog-thumb"
-        src={`${import.meta.env.VITE_SERVER_BASE_URL}/uploads/blog/${blog?.thumbnail}`}
+        src={`${import.meta.env.VITE_SERVER_BASE_URL}/uploads/blog/${
+          blog?.thumbnail
+        }`}
         alt=""
       />
-      <div className="mt-2">
+      <div className="mt-2 relative">
         <h3 className="text-slate-300 text-xl lg:text-2xl"> {blog?.title} </h3>
         <p className="mb-6 text-base text-slate-500 mt-1">
           {blog?.content?.substring(0, 250)}...
@@ -21,29 +29,48 @@ const BlogCard = ({ blog }) => {
           <div className="flex items-center capitalize space-x-2">
             <div className="avater-img bg-indigo-600 text-white">
               <span className="">
-              {blog?.author?.avatar ? (
-            <img src={authorAvatar} alt="avatar" className="cursor-pointer rounded-full" />
-          ) : (
-            authorAvatar
-          )}
+                {blog?.author?.avatar ? (
+                  <img
+                    src={authorAvatar}
+                    alt="avatar"
+                    className="cursor-pointer rounded-full"
+                  />
+                ) : (
+                  authorAvatar
+                )}
               </span>
             </div>
 
             <div>
-              <h5 className="text-slate-500 text-sm">{`${blog?.author?.firstName} ${blog?.author?.lastName}` }</h5>
+              <h5 className="text-slate-500 text-sm">{`${blog?.author?.firstName} ${blog?.author?.lastName}`}</h5>
               <div className="flex items-center text-xs text-slate-700">
-                <span>June 28, 2018</span>
+                <span>{DateFormate(blog?.createdAt)}</span>
               </div>
             </div>
           </div>
 
           <div className="text-sm px-2 py-1 text-slate-700">
-            <span>100 Likes</span>
+            <span>{blog?.likes.length} Likes</span>
           </div>
+        </div>
+
+        {/* <!-- Action Buttons --> */}
+        <div
+          className="absolute right-0 top-0"
+          onClick={() => setActionMenu(!actionMenu)}
+        >
+          <button>
+            <img src={threeDotsIcon} alt="3dots of Action" />
+          </button>
+          {actionMenu && <BlogAction />}
         </div>
       </div>
     </div>
   );
+};
+
+BlogCard.propTypes = {
+  blog: PropTypes.object,
 };
 
 export default BlogCard;

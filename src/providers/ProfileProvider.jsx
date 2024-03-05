@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { useMemo, useReducer } from "react";
+import { useCallback, useReducer } from "react";
 import actions from "../actions";
 import useAxios from "../api/useAxios";
 import { ProfileContext } from "../context";
@@ -14,8 +14,9 @@ const ProfileProvider = ({ children }) => {
   const { axiosInstance } = useAxios();
   const { setLocalStorage, getLocalStorage } = useLocalStorage();
 
-  const fetchProfileData = useMemo(
-    () => async (id) => {
+  // Fetch user profile data
+  const fetchProfileData = useCallback(
+    async (id) => {
       dispatch({ type: actions.profile.DATA_FETCHING });
 
       try {

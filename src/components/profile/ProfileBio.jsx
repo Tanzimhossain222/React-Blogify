@@ -29,6 +29,8 @@ const ProfileBio = () => {
         ) : (
           <textarea
             value={bio}
+            rows={4}
+            cols={55}
             onChange={(e) => setBio(e.target.value)}
             className="w-full h-20 p-2 border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-200  text-sm lg:text-base bg-[#333]"
           />

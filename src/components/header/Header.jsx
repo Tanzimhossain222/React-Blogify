@@ -13,7 +13,7 @@ const Header = () => {
   const navigate = useNavigate();
 
   const isLogin = auth?.user ? true : false;
-  console.log(isLogin);
+
   if (loading) return null;
 
   return (
@@ -50,7 +50,6 @@ const Header = () => {
              * Conditional rendering of the login button & user avatar.
              * If the user is logged in, the logout button and user avatar will be displayed.
              */}
-
             {isLogin ? (
               <>
                 <li>

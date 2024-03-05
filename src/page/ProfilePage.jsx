@@ -15,7 +15,7 @@ const ProfilePage = () => {
   useEffect(() => {
     if (user.id) {
       fetchProfileData(user.id);
-      // fetchProfileData('3d2dde4b6548275fb066');
+      fetchProfileData('3d2dde4b6548275fb066');
     }
   }, [user.id, fetchProfileData]);
 

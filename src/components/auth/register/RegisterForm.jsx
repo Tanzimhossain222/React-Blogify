@@ -16,8 +16,7 @@ const RegisterForm = () => {
   const handleSubmitForm = async (formData) => {
     try {
       const res = await axiosInstance.post("/auth/register", formData);
-      console.log(res);
-
+      
       if (res.status !== 201) {
         throw new Error("An error occurred");
       }

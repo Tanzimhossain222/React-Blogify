@@ -12,7 +12,6 @@ const AuthProvider = ({ children }) => {
 
   // Check if the user is already logged in
   useEffect(() => {
-    console.log("checking local storage");
     const accessToken = getLocalStorage("accessToken");
     const refreshToken = getLocalStorage("refreshToken");
     const user = getLocalStorage("user", true);
@@ -28,7 +27,7 @@ const AuthProvider = ({ children }) => {
       });
     }
     setLoading(false);
-  }, []);
+  }, [getLocalStorage]);
 
   // handle login action
   const login = (userData) => {
@@ -59,7 +58,6 @@ const AuthProvider = ({ children }) => {
 
   // access token handler if axios interceptor refreshes the token
   const setAccessToken = (accessToken) => {
-    console.log(accessToken);
     dispatch({
       type: actions.Auth.setAccessToken,
       payload: { accessToken },
@@ -83,7 +81,7 @@ const AuthProvider = ({ children }) => {
         logout();
       }
     }
-  }, []);
+  }, [getLocalStorage]);
 
   return (
     <AuthContext.Provider

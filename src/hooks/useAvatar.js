@@ -11,7 +11,7 @@ const useAvatar = (user) => {
     userAvatar = user?.firstName?.charAt(0);
     return userAvatar;
 
-
 }
+
 
 export default useAvatar;
