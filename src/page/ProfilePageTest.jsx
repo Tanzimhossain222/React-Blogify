@@ -4,20 +4,24 @@ import ProfileBlogs from "../components/blogs/ProfileBlogs";
 import ProfileInfo from "../components/profile/ProfileInfo";
 import useAuth from "../hooks/useAuth";
 import useProfile from "../hooks/useProfile";
+import { useParams } from "react-router-dom";
 
-const ProfilePage = () => {
+const ProfilePageTest = () => {
+  const {userID} = useParams();
   const {
     auth: { user },
   } = useAuth();
-
   const { fetchProfileData, state } = useProfile();
 
+  const id = userID || user.id;
+
+
   useEffect(() => {
-    if (user.id) {
-      fetchProfileData(user.id);
+    if (id) {
+      fetchProfileData(id);
       // fetchProfileData('3d2dde4b6548275fb066');
     }
-  }, [user.id, fetchProfileData]);
+  }, [id, fetchProfileData]);
 
   if (state?.loading) {
     return <LoadingSkeleton />;
@@ -35,4 +39,4 @@ const ProfilePage = () => {
   );
 };
 
-export default ProfilePage;
+export default ProfilePageTest;

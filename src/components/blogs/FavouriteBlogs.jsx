@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import useAxios from "../../api/useAxios";
 
 const FavouriteBlogs = () => {
   const [favouriteBlogs, setFavouriteBlogs] = useState([]);
   const { axiosInstance } = useAxios();
+  const navigation = useNavigate();
 
   useEffect(() => {
     const fetchFavouriteBlogs = async () => {

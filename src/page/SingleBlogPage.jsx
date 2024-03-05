@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import useAxios from "../api/useAxios";
 import BlogComment from "../components/blogs/singleBlog/BlogComment";
 import BlogContent from "../components/blogs/singleBlog/BlogContent";
 import SingleBlogAction from "../components/blogs/singleBlog/SingleBlogAction";
 
-const SingleBlogPage = ({ id = "7c12b4b48531bcc995ae" }) => {
+const SingleBlogPage = () => {
+  const { blogId } = useParams();
+  const id = blogId;
+
   const { axiosInstance } = useAxios();
   const [singleBlog, setSingleBlog] = useState({});
 

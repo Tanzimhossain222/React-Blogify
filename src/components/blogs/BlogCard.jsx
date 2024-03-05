@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import threeDotsIcon from "../../assets/icons/3dots.svg";
 import useAvatar from "../../hooks/useAvatar";
 import DateFormate from "../../utils/dateTimeFormate";
@@ -8,9 +9,17 @@ import BlogAction from "./BlogAction";
 const BlogCard = ({ blog }) => {
   const authorAvatar = useAvatar(blog?.author);
   const [actionMenu, setActionMenu] = useState(false);
+  const navigation = useNavigate();
+
+  const handleProfileClick = (event) => {
+    event.stopPropagation();
+  };
 
   return (
-    <div className="blog-card">
+    <div
+      className="blog-card"
+      onClick={() => navigation(`/singleBlog/${blog?.id}`)}
+    >
       <img
         className="blog-thumb"
         src={`${import.meta.env.VITE_SERVER_BASE_URL}/uploads/blog/${
@@ -27,22 +36,29 @@ const BlogCard = ({ blog }) => {
         {/* <!-- Meta Informations --> */}
         <div className="flex justify-between items-center">
           <div className="flex items-center capitalize space-x-2">
-            <div className="avater-img bg-indigo-600 text-white">
-              <span className="">
-                {blog?.author?.avatar ? (
-                  <img
-                    src={authorAvatar}
-                    alt="avatar"
-                    className="cursor-pointer rounded-full"
-                  />
-                ) : (
-                  authorAvatar
-                )}
-              </span>
-            </div>
+            <Link
+              to={`/testProfile/${blog?.author?.id}`}
+              onClick={handleProfileClick}
+            >
+              <div className="avater-img bg-indigo-600 text-white">
+                <span className="">
+                  {blog?.author?.avatar ? (
+                    <img
+                      src={authorAvatar}
+                      alt="avatar"
+                      className="cursor-pointer rounded-full"
+                    />
+                  ) : (
+                    authorAvatar
+                  )}
+                </span>
+              </div>
+            </Link>
 
             <div>
-              <h5 className="text-slate-500 text-sm">{`${blog?.author?.firstName} ${blog?.author?.lastName}`}</h5>
+              <Link to="/profile" onClick={handleProfileClick}>
+                <h5 className="text-slate-500 text-sm">{`${blog?.author?.firstName} ${blog?.author?.lastName}`}</h5>
+              </Link>
               <div className="flex items-center text-xs text-slate-700">
                 <span>{DateFormate(blog?.createdAt)}</span>
               </div>
