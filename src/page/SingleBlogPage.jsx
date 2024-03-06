@@ -13,13 +13,11 @@ const SingleBlogPage = () => {
     fetchSingleBlog(blogId);
   }, [blogId, fetchSingleBlog]);
 
-  if(state.loading){
-    return <h1>Loading...</h1>
+  if (state.loading) {
+    return <h1>Loading...</h1>;
   }
 
-
   const { singleBlog } = state;
-  // console.log(state);
 
   return (
     <div>
@@ -29,7 +27,10 @@ const SingleBlogPage = () => {
         </section>
         <section>
           {singleBlog?.comments && (
-            <BlogComment  comments={singleBlog?.comments} postId={singleBlog.id} />
+            <BlogComment
+              comments={singleBlog?.comments}
+              postId={singleBlog.id}
+            />
           )}
         </section>
       </main>

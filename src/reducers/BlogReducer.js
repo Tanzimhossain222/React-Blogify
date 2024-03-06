@@ -91,6 +91,28 @@ const blogReducer = (state = initialValues, action) => {
             }
         }
 
+        case actions.blog.BLOG_LIKED:{
+            return {
+                ...state,
+                singleBlog: {
+                    ...state.singleBlog,
+                    likes: action.payload,
+                },
+                loading: false,
+            }
+        }
+
+        case actions.blog.BLOG_FAVORITE:{
+            return {
+                ...state,
+                singleBlog: {
+                    ...state.singleBlog,
+                    isFavourite: action.payload,
+                },
+                loading: false,
+            }
+        }
+
         default:
             return state
     }

@@ -166,6 +166,47 @@ const BlogProvider = ({ children }) => {
     }
   };
 
+  const blogLiked = async (blogId) => {
+    try {
+      const res = await axiosInstance.post(`/blogs/${blogId}/like`);
+
+      if (res.status !== 200) {
+        throw new Error("An error occurred");
+      }
+
+      dispatch({
+        type: actions.blog.BLOG_LIKED,
+        payload: res.data.likes,
+      });
+
+      return res.data.isLiked;
+    } catch (err) {
+      dispatch({
+        type: actions.blog.BLOG_FETCH_ERROR,
+        payload: err.message,
+      });
+    }
+  };
+
+  const toggleFavourite = async (blogId) => {
+    try {
+      const res = await axiosInstance.patch(`/blogs/${blogId}/favourite`);
+      if (res.status !== 200) {
+        throw new Error("An error occurred");
+      }
+
+      dispatch({
+        type: actions.blog.BLOG_FAVORITE,
+        payload: res.data.isFavourite,
+      });
+    } catch (err) {
+      dispatch({
+        type: actions.blog.BLOG_FETCH_ERROR,
+        payload: err.message,
+      });
+    }
+  };
+
   return (
     <BlogContext.Provider
       value={{
@@ -177,6 +218,8 @@ const BlogProvider = ({ children }) => {
         fetchSingleBlog,
         postComment,
         deleteComment,
+        blogLiked,
+        toggleFavourite,
       }}
     >
       {children}

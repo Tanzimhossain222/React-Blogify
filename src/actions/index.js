@@ -23,6 +23,8 @@ const actions = {
         SINGLE_BLOG_FETCHED: 'SINGLE_BLOG_FETCHED',
         POST_COMMENT: 'POST_COMMENT',
         DELETE_COMMENT: 'DELETE_COMMENT',
+        BLOG_LIKED: 'BLOG_LIKED',
+        BLOG_FAVORITE: 'BLOG_FAVORITE',
     },
 }
 
