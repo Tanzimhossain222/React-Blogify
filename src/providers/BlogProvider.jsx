@@ -32,8 +32,6 @@ const BlogProvider = ({ children }) => {
       });
 
       return res.data;
-
-
     } catch (err) {
       dispatch({
         type: actions.blog.BLOG_FETCH_ERROR,
@@ -88,7 +86,6 @@ const BlogProvider = ({ children }) => {
       });
 
       return res.data;
-
     } catch (err) {
       dispatch({
         type: actions.blog.BLOG_FETCH_ERROR,
@@ -123,6 +120,52 @@ const BlogProvider = ({ children }) => {
     [axiosInstance, dispatch]
   );
 
+  const postComment = async (content, blogId) => {
+    try {
+      const res = await axiosInstance.post(`/blogs/${blogId}/comment`, {
+        content,
+      });
+
+      if (res.status !== 200) {
+        throw new Error("An error occurred");
+      }
+
+      console.log(res.data);
+
+      dispatch({
+        type: actions.blog.POST_COMMENT,
+        payload: res.data.comments,
+      });
+    } catch (err) {
+      dispatch({
+        type: actions.blog.BLOG_FETCH_ERROR,
+        payload: err.message,
+      });
+    }
+  };
+
+  const deleteComment = async (commentId, blogId) => {
+    try {
+      const res = await axiosInstance.delete(
+        `/blogs/${blogId}/comment/${commentId}`
+      );
+
+      if (res.status !== 200) {
+        throw new Error("An error occurred");
+      }
+
+      dispatch({
+        type: actions.blog.DELETE_COMMENT,
+        payload: commentId,
+      });
+    } catch (err) {
+      dispatch({
+        type: actions.blog.BLOG_FETCH_ERROR,
+        payload: err.message,
+      });
+    }
+  };
+
   return (
     <BlogContext.Provider
       value={{
@@ -132,6 +175,8 @@ const BlogProvider = ({ children }) => {
         deleteBlog,
         editBlog,
         fetchSingleBlog,
+        postComment,
+        deleteComment,
       }}
     >
       {children}

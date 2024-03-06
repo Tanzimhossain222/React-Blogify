@@ -24,7 +24,7 @@ const blogReducer = (state = initialValues, action) => {
             }
         }
 
-        case actions.blog.BLOG_CREATED:{
+        case actions.blog.BLOG_CREATED: {
             return {
                 ...state,
                 blogs: [action.payload, ...state.blogs],
@@ -40,11 +40,11 @@ const blogReducer = (state = initialValues, action) => {
             }
         }
 
-        case actions.blog.BLOG_EDITED:{
+        case actions.blog.BLOG_EDITED: {
             return {
                 ...state,
                 blogs: state.blogs.map((blog) => {
-                    if(blog.id === action.payload.id){
+                    if (blog.id === action.payload.id) {
                         return action.payload
                     }
                     return blog
@@ -60,7 +60,7 @@ const blogReducer = (state = initialValues, action) => {
             }
         }
 
-        case actions.blog.SINGLE_BLOG_FETCHED:{
+        case actions.blog.SINGLE_BLOG_FETCHED: {
             return {
                 ...state,
                 singleBlog: action.payload,
@@ -68,10 +68,34 @@ const blogReducer = (state = initialValues, action) => {
             }
         }
 
+        case actions.blog.POST_COMMENT: {
+            return {
+                ...state,
+                loading: false,
+                singleBlog: {
+                    ...state.singleBlog,
+                    comments: action.payload,
+                },
 
+            }
+        }
+
+        case actions.blog.DELETE_COMMENT: {
+            return {
+                ...state,
+                singleBlog: {
+                    ...state.singleBlog,
+                    comments: state.singleBlog.comments.filter((comment) => comment.id !== action.payload)
+                },
+                loading: false,
+            }
+        }
+
+        default:
+            return state
     }
-    
+
 }
 
 
-export { blogReducer, initialValues}
+export { blogReducer, initialValues }

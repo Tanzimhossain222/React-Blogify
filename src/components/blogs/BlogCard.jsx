@@ -41,7 +41,7 @@ const BlogCard = ({ blog }) => {
         <div className="flex justify-between items-center">
           <div className="flex items-center capitalize space-x-2">
             <Link
-              to={`/testProfile/${blog?.author?.id}`}
+              to={`/Profile/${blog?.author?.id}`}
               onClick={handleProfileClick}
             >
               <div className="avater-img bg-indigo-600 text-white">

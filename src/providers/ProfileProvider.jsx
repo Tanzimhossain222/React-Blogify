@@ -60,8 +60,6 @@ const ProfileProvider = ({ children }) => {
       formData.append("avatar", file);
     }
 
-    console.log(formData);
-
     dispatch({ type: actions.profile.DATA_FETCHING });
 
     try {

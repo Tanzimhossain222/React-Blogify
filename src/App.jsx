@@ -12,6 +12,7 @@ import PrivateRoutes from "./routes/PrivateRoutes";
 
 import EditBlogPage from "./page/EditBlogPage";
 import BlogProvider from "./providers/BlogProvider";
+import AuthorPage from "./page/AuthorPage";
 
 const App = () => {
   return (
@@ -23,6 +24,7 @@ const App = () => {
             <Route path="/createBlog" element={<CreateBlogPage />} />
             <Route path="/singleBlog/:blogId" element={<SingleBlogPage />} />
             <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/profile/:userId" element={<AuthorPage />} />
             <Route path="/blogEdit/:postId" element={<EditBlogPage />} />
           </Route>
           <Route path="/search" element={<SearchPage />} />
