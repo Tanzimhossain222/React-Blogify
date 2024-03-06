@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import BlogComment from "../components/blogs/singleBlog/BlogComment";
+import BlogCommentList from "../components/blogs/singleBlog/BlogCommentList";
 import BlogContent from "../components/blogs/singleBlog/BlogContent";
 import SingleBlogAction from "../components/blogs/singleBlog/SingleBlogAction";
 import useBlogs from "../hooks/useBlogs";
@@ -27,7 +27,7 @@ const SingleBlogPage = () => {
         </section>
         <section>
           {singleBlog?.comments && (
-            <BlogComment
+            <BlogCommentList
               comments={singleBlog?.comments}
               postId={singleBlog.id}
             />

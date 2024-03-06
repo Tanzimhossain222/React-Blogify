@@ -1,7 +1,9 @@
+import SearchPortal from "../components/search/SearchPortal";
+
 const SearchPage = () => {
   return (
     <div>
-      <h1>Search Page</h1>
+      <SearchPortal />
     </div>
   );
 };

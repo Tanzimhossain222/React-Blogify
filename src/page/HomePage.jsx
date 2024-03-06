@@ -1,7 +1,16 @@
+import { useEffect } from "react";
 import BlogLists from "../components/blogs/BlogLists";
 import BlogSlider from "../components/blogs/BlogSlider";
+import useDisplayBlogs from "../hooks/useDisplayBlogs";
 
 const HomePage = () => {
+  const {fetchAllBlogs} = useDisplayBlogs();
+
+  useEffect(() =>{
+    fetchAllBlogs();
+  },[])
+
+
   return (
     <main>
       <section>

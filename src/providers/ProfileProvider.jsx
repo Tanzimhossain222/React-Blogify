@@ -118,6 +118,31 @@ const ProfileProvider = ({ children }) => {
     }
   };
 
+  //handle Single Blog Delete
+  const deleteBlog = async (blogId)=>{
+    try{
+      dispatch({
+        type: actions.profile.DATA_FETCHING,
+      });
+
+      const res = await axiosInstance.delete(`/blogs/${blogId}`);
+
+      if (res.status !== 200) {
+        throw new Error("An error occurred");
+      }
+      console.log(blogId, 'blogId');
+      dispatch({
+        type: actions.profile.PROFILE_BLOG_DELETED,
+        payload: blogId,
+      });
+    } catch(err){
+      dispatch({
+        type: actions.profile.DATE_FETCH_ERROR,
+        payload: err.message,
+      });
+    }
+  }
+
   return (
     <>
       <ProfileContext.Provider
@@ -127,6 +152,7 @@ const ProfileProvider = ({ children }) => {
           fetchProfileData,
           handleImageChange,
           handleUserDataEdit,
+          deleteBlog
         }}
       >
         {children}

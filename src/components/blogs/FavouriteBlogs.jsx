@@ -11,11 +11,14 @@ const FavouriteBlogs = () => {
   useEffect(() => {
     const fetchFavouriteBlogs = async () => {
       const res = await axiosInstance.get("/blogs/favourites");
-      const data = res.data;
-    };
+      const data = res.data.blogs;
 
+      if (data.length > 0) {
+        setFavouriteBlogs(data);
+      }
+    };
     fetchFavouriteBlogs();
-  });
+  }, [axiosInstance]);
 
   return (
     <div className="sidebar-card">
@@ -24,41 +27,19 @@ const FavouriteBlogs = () => {
       </h3>
 
       <ul className="space-y-5 my-5">
-        <li>
-          <h3 className="text-slate-400 font-medium hover:text-slate-300 transition-all cursor-pointer">
-            How to Auto Deploy a Next.js App on Ubuntu from GitHub
-          </h3>
-          <p className="text-slate-600 text-sm">
-            #tailwindcss, #server, #ubuntu
-          </p>
-        </li>
-
-        <li>
-          <h3 className="text-slate-400 font-medium hover:text-slate-300 transition-all cursor-pointer">
-            How to Auto Deploy a Next.js App on Ubuntu from GitHub
-          </h3>
-          <p className="text-slate-600 text-sm">
-            #tailwindcss, #server, #ubuntu
-          </p>
-        </li>
-
-        <li>
-          <h3 className="text-slate-400 font-medium hover:text-slate-300 transition-all cursor-pointer">
-            How to Auto Deploy a Next.js App on Ubuntu from GitHub
-          </h3>
-          <p className="text-slate-600 text-sm">
-            #tailwindcss, #server, #ubuntu
-          </p>
-        </li>
-
-        <li>
-          <h3 className="text-slate-400 font-medium hover:text-slate-300 transition-all cursor-pointer">
-            How to Auto Deploy a Next.js App on Ubuntu from GitHub
-          </h3>
-          <p className="text-slate-600 text-sm">
-            #tailwindcss, #server, #ubuntu
-          </p>
-        </li>
+        {favouriteBlogs.length > 0 &&
+          favouriteBlogs.map((blog) => (
+            <li
+              key={blog.id}
+              onClick={() => navigation(`/singleBlog/${blog.id}`)}
+              className="cursor-pointer"
+            >
+              <h3 className="text-slate-400 font-medium hover:text-slate-300 transition-all">
+                {blog.title}
+              </h3>
+              <p className="text-slate-600 text-sm">{blog.tags}</p>
+            </li>
+          ))}
       </ul>
     </div>
   );

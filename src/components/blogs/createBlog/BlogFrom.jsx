@@ -66,7 +66,7 @@ const BlogForm = ({ EditBlog = null }) => {
     }
 
     if (BlogInfo) {
-      const id = BlogInfo.id;
+      const id = BlogInfo?.blog?.id;
       navigate(`/singleBlog/${id}`);
     }
   };

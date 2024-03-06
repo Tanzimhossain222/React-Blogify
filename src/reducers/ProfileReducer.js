@@ -51,6 +51,14 @@ const profileReducer = (state = initialProfileState, action) => {
                 error: action.payload,
             }
 
+        case actions.profile.PROFILE_BLOG_DELETED:{
+            return {
+                ...state,
+                blogs: state.blogs.filter(blog => blog.id !== action.payload),
+                loading: false,
+            }
+        }
+
         default:
             return state;
     }

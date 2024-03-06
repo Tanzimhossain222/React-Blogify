@@ -6,6 +6,7 @@ const Layout = ({ children }) => {
   return (
     <>
       <Header />
+      <div id="search-root"></div>
       {children}
       <Footer />
     </>

@@ -1,11 +1,11 @@
+import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 import deleteIcon from "../../assets/icons/delete.svg";
 import editIcon from "../../assets/icons/edit.svg";
-import useBlogs from "../../hooks/useBlogs";
-import PropTypes from "prop-types";
+import useProfile from "../../hooks/useProfile";
 
 const BlogAction = ({ blog }) => {
-  const { deleteBlog } = useBlogs();
+  const { deleteBlog } = useProfile();
   const navigation = useNavigate();
 
   const handleEdit = (e) => {
@@ -15,6 +15,7 @@ const BlogAction = ({ blog }) => {
 
   const handleDelete = (e) => {
     e.stopPropagation();
+    deleteBlog(blog.id);
   };
 
   return (
@@ -36,7 +37,6 @@ const BlogAction = ({ blog }) => {
     </div>
   );
 };
-
 
 BlogAction.propTypes = {
   blog: PropTypes.object.isRequired,

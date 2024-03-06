@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import threeDotsIcon from "../../assets/icons/3dots.svg";
-import useAuth from "../../hooks/useAuth";
+import useAuthCheck from "../../hooks/useAuthCheck";
 import useAvatar from "../../hooks/useAvatar";
 import DateFormate from "../../utils/dateTimeFormate";
 import BlogAction from "./BlogAction";
@@ -11,9 +11,8 @@ const BlogCard = ({ blog }) => {
   const authorAvatar = useAvatar(blog?.author);
   const [actionMenu, setActionMenu] = useState(false);
   const navigation = useNavigate();
-  const { auth } = useAuth();
 
-  const isMe = blog?.author?.id === auth?.user?.id;
+  const isMe = useAuthCheck(blog?.author?.id);
 
   const handleProfileClick = (event) => {
     event.stopPropagation();
@@ -29,8 +28,9 @@ const BlogCard = ({ blog }) => {
         src={`${import.meta.env.VITE_SERVER_BASE_URL}/uploads/blog/${
           blog?.thumbnail
         }`}
-        alt=""
+        alt="blog-thumb"
       />
+
       <div className="mt-2 relative">
         <h3 className="text-slate-300 text-xl lg:text-2xl"> {blog?.title} </h3>
         <p className="mb-6 text-base text-slate-500 mt-1">
@@ -63,13 +63,13 @@ const BlogCard = ({ blog }) => {
               <Link to="/profile" onClick={handleProfileClick}>
                 <h5 className="text-slate-500 text-sm">{`${blog?.author?.firstName} ${blog?.author?.lastName}`}</h5>
               </Link>
-              <div className="flex items-center text-xs text-slate-700">
+              <div className="flex items-center text-xs text-slate-500">
                 <span>{DateFormate(blog?.createdAt)}</span>
               </div>
             </div>
           </div>
 
-          <div className="text-sm px-2 py-1 text-slate-700">
+          <div className="text-sm px-2 py-1 text-slate-500">
             <span>{blog?.likes.length} Likes</span>
           </div>
         </div>
@@ -92,34 +92,9 @@ const BlogCard = ({ blog }) => {
               />
             </button>
             {actionMenu && <BlogAction blog={blog} />}
-
-            {/* {actionMenu && (
-                <div className="action-modal-container">
-                <button
-                  className="action-menu-item hover:text-lwsGreen"
-                  onClick={(e) => {
-                    console.log("Edit clicked");
-                    e.stopPropagation();
-                  }}
-                >
-                  <img src={editIcon} alt="Edit" />
-                  Edit
-                </button>
-                <button
-                  className="action-menu-item hover:text-red-500"
-                  onClick={(e) => {
-                    console.log("Delete clicked");
-                    e.stopPropagation();
-                  }}
-                >
-                  <img src={deleteIcon} alt="Delete" />
-                  Delete
-                </button>
-              </div>
-              
-            )} */}
           </div>
         )}
+        
       </div>
     </div>
   );

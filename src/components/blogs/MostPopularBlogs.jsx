@@ -7,7 +7,7 @@ const MostPopularBlogs = () => {
 
   useEffect(() => {
     async function fetchPopularBlogs() {
-      const res = await axiosInstance.get("blogs/popular?page=2&limit=4");
+      const res = await axiosInstance.get("blogs/popular?page=2&limit=5");
       setBlogs(res.data?.blogs);
     }
 

@@ -14,6 +14,10 @@ const Header = () => {
 
   const isLogin = auth?.user ? true : false;
 
+  const handleSearchClick = () => {
+    const searchRoot = document.getElementById("search-root");
+  }
+
   if (loading) return null;
 
   return (
@@ -36,7 +40,7 @@ const Header = () => {
                 Write
               </Link>
             </li>
-            <li>
+            {/* <li>
               <Link
                 to="/search"
                 className="flex items-center gap-2 cursor-pointer"
@@ -44,6 +48,15 @@ const Header = () => {
                 <img src={searchIcon} alt="Search" />
                 <span>Search</span>
               </Link>
+            </li> */}
+            <li>
+              <span
+              onClick={handleSearchClick}
+                className="flex items-center gap-2 cursor-pointer"
+              >
+                <img src={searchIcon} alt="Search" />
+                <span>Search</span>
+              </span>
             </li>
 
             {/**
