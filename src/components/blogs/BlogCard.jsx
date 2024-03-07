@@ -60,7 +60,10 @@ const BlogCard = ({ blog }) => {
             </Link>
 
             <div>
-              <Link to="/profile" onClick={handleProfileClick}>
+              <Link
+                to={`/Profile/${blog?.author?.id}`}
+                onClick={handleProfileClick}
+              >
                 <h5 className="text-slate-500 text-sm">{`${blog?.author?.firstName} ${blog?.author?.lastName}`}</h5>
               </Link>
               <div className="flex items-center text-xs text-slate-500">
@@ -94,7 +97,6 @@ const BlogCard = ({ blog }) => {
             {actionMenu && <BlogAction blog={blog} />}
           </div>
         )}
-        
       </div>
     </div>
   );

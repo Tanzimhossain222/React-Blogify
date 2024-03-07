@@ -3,11 +3,11 @@ import { useParams } from "react-router-dom";
 import BlogCommentList from "../components/blogs/singleBlog/BlogCommentList";
 import BlogContent from "../components/blogs/singleBlog/BlogContent";
 import SingleBlogAction from "../components/blogs/singleBlog/SingleBlogAction";
-import useBlogs from "../hooks/useBlogs";
+import useDisplayBlogs from "../hooks/useDisplayBlogs";
 
 const SingleBlogPage = () => {
   const { blogId } = useParams();
-  const { fetchSingleBlog, state } = useBlogs();
+  const { fetchSingleBlog, state } = useDisplayBlogs();
 
   useEffect(() => {
     fetchSingleBlog(blogId);
@@ -35,7 +35,7 @@ const SingleBlogPage = () => {
         </section>
       </main>
 
-      <SingleBlogAction singleBlog={singleBlog} />
+      {singleBlog && <SingleBlogAction singleBlog={singleBlog} />}
     </div>
   );
 };

@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import { useCallback, useReducer } from "react";
 import actions from "../actions";
+import publicAxios from "../api/axiosInstance";
 import useAxios from "../api/useAxios";
 import { ProfileContext } from "../context";
 import useLocalStorage from "../hooks/useLocalStorage";
@@ -119,8 +120,8 @@ const ProfileProvider = ({ children }) => {
   };
 
   //handle Single Blog Delete
-  const deleteBlog = async (blogId)=>{
-    try{
+  const deleteBlog = async (blogId) => {
+    try {
       dispatch({
         type: actions.profile.DATA_FETCHING,
       });
@@ -130,18 +131,51 @@ const ProfileProvider = ({ children }) => {
       if (res.status !== 200) {
         throw new Error("An error occurred");
       }
-      console.log(blogId, 'blogId');
+      console.log(blogId, "blogId");
       dispatch({
         type: actions.profile.PROFILE_BLOG_DELETED,
         payload: blogId,
       });
-    } catch(err){
+    } catch (err) {
       dispatch({
         type: actions.profile.DATE_FETCH_ERROR,
         payload: err.message,
       });
     }
-  }
+  };
+
+  //fetch blog author
+  const fetchBlogAuthor = async (id) => {
+    // dispatch({ type: actions.profile.DATA_FETCHING });
+
+    try {
+      const res = await publicAxios.get(`/profile/${id}`);
+      if (res.status === 200) {
+        const formattedData = {
+          blogAuthor: {
+            id: res.data.id,
+            email: res.data.email,
+            firstName: res.data.firstName,
+            lastName: res.data.lastName,
+            avatar: res.data.avatar,
+            bio: res.data.bio,
+          },
+          blogs: res.data.blogs,
+        };
+
+        dispatch({
+          type: actions.profile.FETCH_BLOG_AUTHOR,
+          payload: formattedData,
+        });
+        return formattedData;
+      }
+    } catch (err) {
+      dispatch({
+        type: actions.profile.DATE_FETCH_ERROR,
+        payload: err.message,
+      });
+    }
+  };
 
   return (
     <>
@@ -152,7 +186,8 @@ const ProfileProvider = ({ children }) => {
           fetchProfileData,
           handleImageChange,
           handleUserDataEdit,
-          deleteBlog
+          deleteBlog,
+          fetchBlogAuthor,
         }}
       >
         {children}

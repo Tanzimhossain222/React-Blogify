@@ -45,7 +45,7 @@ const Header = () => {
                   Write
                 </Link>
               </li>
-              
+
               <li>
                 <span
                   onClick={handleSearchClick}
@@ -76,7 +76,7 @@ const Header = () => {
                   </li>
                   <li
                     className="flex items-center"
-                    onClick={() => navigate("/profile")}
+                    onClick={() => navigate("/profile/me")}
                   >
                     <div className="avater-img bg-orange-600 text-white">
                       <span className="">
@@ -97,7 +97,16 @@ const Header = () => {
                     </span>
                   </li>
                 </>
-              ) : null}
+              ) : (
+                <li>
+                  <Link
+                    to="/login"
+                    className="text-white/50 hover:text-white transition-all duration-200"
+                  >
+                    Login
+                  </Link>
+                </li>
+              )}
             </ul>
           </div>
         </nav>

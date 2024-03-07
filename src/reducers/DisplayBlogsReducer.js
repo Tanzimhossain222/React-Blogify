@@ -4,6 +4,7 @@ const initialState = {
     blogs: [],
     popularBlogs: [],
     searchBlogs: [],
+    singleBlog: {},
     isLoading: false,
     error: null,
 }
@@ -48,7 +49,14 @@ const DisplayBlogsReducer = (state = initialState, action) => {
             }
         }
 
-    
+        case actions.display.DISPLAY_SINGLE_BLOG_FETCHED: {
+            return {
+                ...state,
+                singleBlog: action.payload,
+                isLoading: false,
+            }
+        }
+
         default: {
             return state
         }

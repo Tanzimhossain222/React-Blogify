@@ -4,13 +4,11 @@ import BlogSlider from "../components/blogs/BlogSlider";
 import useDisplayBlogs from "../hooks/useDisplayBlogs";
 
 const HomePage = () => {
-  const {fetchAllBlogs} = useDisplayBlogs();
+  const { fetchAllBlogs } = useDisplayBlogs();
 
-  useEffect(() =>{
+  useEffect(() => {
     fetchAllBlogs();
-    console.log("Fetching all blogs");
-  },[fetchAllBlogs])
-
+  }, [fetchAllBlogs]);
 
   return (
     <main>

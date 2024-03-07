@@ -29,11 +29,12 @@ const MostPopularBlogs = () => {
                   {blog.title}
                 </h3>
               </Link>
-              <p className="text-slate-600 text-sm">
+              <p className="text-slate-600 text-sm ">
                 by
-                <Link to="/profile">
-                  {" "}
-                  {blog.author?.firstName + " " + blog.author?.lastName}{" "}
+                <Link to={`/Profile/${blog.author?.id}`}>
+                  <span className="hover:text-slate-500">
+                    {blog.author?.firstName + " " + blog.author?.lastName}{" "}
+                  </span>
                 </Link>
                 <span>·</span> {blog?.likes?.length} Likes
               </p>

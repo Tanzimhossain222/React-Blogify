@@ -10,8 +10,9 @@ import {
 
 const PublicProvider = ({ children }) => {
   const [state, dispatch] = useReducer(DisplayBlogsReducer, initialState);
+  // const { axiosInstance: privateAxios } = useAxios();
 
-  const fetchAllBlogs =useCallback( async () => {
+  const fetchAllBlogs = useCallback(async () => {
     try {
       dispatch({ type: actions.display.DISPLAY_FETCHING });
 
@@ -26,7 +27,7 @@ const PublicProvider = ({ children }) => {
         payload: err.message,
       });
     }
-  },[]);
+  }, []);
 
   const getSearchedBlogs = async (searchQuery) => {
     try {
@@ -56,16 +57,89 @@ const PublicProvider = ({ children }) => {
     }
   };
 
-  const clearSearchData = ()=>{
+  const clearSearchData = () => {
     dispatch({
-        type: actions.display.SEARCH_DATA_FETCHED,
-        payload: [],
-    })
-  }
+      type: actions.display.SEARCH_DATA_FETCHED,
+      payload: [],
+    });
+  };
+
+  const fetchSingleBlog = useCallback(
+    async (id) => {
+      try {
+        dispatch({
+          type: actions.display.DISPLAY_FETCHING,
+        });
+        const res = await axiosInstance.get(`/blogs/${id}`);
+
+        if (res.status !== 200) {
+          throw new Error("An error occurred");
+        }
+
+        dispatch({
+          type: actions.display.DISPLAY_SINGLE_BLOG_FETCHED,
+          payload: res.data,
+        });
+      } catch (err) {
+        dispatch({
+          type: actions.display.DISPLAY_ERROR,
+          payload: err.message,
+        });
+      }
+    },
+    [dispatch]
+  );
+
+  // const blogLiked = async (blogId) => {
+  //   try {
+  //     const res = await privateAxios.post(`/blogs/${blogId}/like`);
+
+  //     if (res.status !== 200) {
+  //       throw new Error("An error occurred");
+  //     }
+
+  //     dispatch({
+  //       type: actions.blog.BLOG_LIKED,
+  //       payload: res.data.likes,
+  //     });
+
+  //     return res.data.isLiked;
+  //   } catch (err) {
+  //     dispatch({
+  //       type: actions.blog.BLOG_FETCH_ERROR,
+  //       payload: err.message,
+  //     });
+  //   }
+  // };
+
+  // const toggleFavourite = async (blogId) => {
+  //   try {
+  //     const res = await privateAxios.patch(`/blogs/${blogId}/favourite`);
+  //     if (res.status !== 200) {
+  //       throw new Error("An error occurred");
+  //     }
+
+  //     dispatch({
+  //       type: actions.blog.BLOG_FAVORITE,
+  //       payload: res.data.isFavourite,
+  //     });
+  //   } catch (err) {
+  //     dispatch({
+  //       type: actions.blog.BLOG_FETCH_ERROR,
+  //       payload: err.message,
+  //     });
+  //   }
+  // };
 
   return (
     <DisplayBlogContext.Provider
-      value={{ state, fetchAllBlogs, getSearchedBlogs,clearSearchData }}
+      value={{
+        state,
+        fetchAllBlogs,
+        getSearchedBlogs,
+        clearSearchData,
+        fetchSingleBlog,
+      }}
     >
       {children}
     </DisplayBlogContext.Provider>

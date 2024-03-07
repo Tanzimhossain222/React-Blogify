@@ -6,6 +6,7 @@ const initialProfileState = {
     loading: false,
     error: null,
     singleBlog: null,
+    blogAuthor: null,
 }
 
 const profileReducer = (state = initialProfileState, action) => {
@@ -23,6 +24,7 @@ const profileReducer = (state = initialProfileState, action) => {
                 loading: false,
                 user: action.payload.user,
                 blogs: action.payload.blogs,
+                blogAuthor: null
             }
         }
 
@@ -51,11 +53,21 @@ const profileReducer = (state = initialProfileState, action) => {
                 error: action.payload,
             }
 
-        case actions.profile.PROFILE_BLOG_DELETED:{
+        case actions.profile.PROFILE_BLOG_DELETED: {
             return {
                 ...state,
                 blogs: state.blogs.filter(blog => blog.id !== action.payload),
                 loading: false,
+            }
+        }
+
+        case actions.profile.FETCH_BLOG_AUTHOR: {
+            return {
+                ...state,
+                loading: false,
+                blogAuthor: action.payload.blogAuthor,
+                blogs: action.payload.blogs,
+                user: null
             }
         }
 

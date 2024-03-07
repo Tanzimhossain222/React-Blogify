@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+import { useNavigate } from "react-router-dom";
 import deleteIcon from "../../../assets/icons/delete.svg";
 import useAuthCheck from "../../../hooks/useAuthCheck";
 import useAvatar from "../../../hooks/useAvatar";
@@ -6,6 +7,7 @@ import useBlogs from "../../../hooks/useBlogs";
 
 const BlogComment = ({ comment, postId }) => {
   const { deleteComment } = useBlogs();
+  const navigation = useNavigate();
 
   const isMe = useAuthCheck(comment.author.id);
 
@@ -17,8 +19,11 @@ const BlogComment = ({ comment, postId }) => {
 
   return (
     <>
-      <div className="avater-img bg-orange-600 text-white">
-        <span className="">
+      <div className="avater-img bg-orange-600 text-white cursor-pointer">
+        <span
+          className=""
+          onClick={() => navigation(`/profile/${comment?.author?.id}`)}
+        >
           {comment?.author?.avatar ? (
             <img
               src={commentAvatar}
@@ -33,7 +38,10 @@ const BlogComment = ({ comment, postId }) => {
 
       <div className="w-full">
         <div className="flex justify-between">
-          <h5 className="text-slate-500 font-bold">
+          <h5
+            className="text-slate-500 font-bold  cursor-pointer"
+            onClick={() => navigation(`/profile/${comment?.author?.id}`)}
+          >
             {comment.author.firstName + " " + comment.author.lastName}
           </h5>
           {isMe && (

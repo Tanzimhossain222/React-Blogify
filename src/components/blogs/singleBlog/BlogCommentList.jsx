@@ -1,8 +1,16 @@
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
+import useAuth from "../../../hooks/useAuth";
 import BlogComment from "./BlogComment";
 import CommentBox from "./CommentBox";
 
 const BlogCommentList = ({ comments = [], postId }) => {
+  const {
+    auth: { user },
+  } = useAuth();
+
+  const isLogged = user ? true : false;
+
   return (
     <section id="comments">
       <div className="mx-auto w-full md:w-10/12 container">
@@ -10,7 +18,19 @@ const BlogCommentList = ({ comments = [], postId }) => {
           Comments ({comments.length})
         </h2>
 
-        <CommentBox postId={postId} />
+        {isLogged ? (
+          <CommentBox postId={postId} />
+        ) : (
+          <div className="text-center  my-4">
+            <p className="text-gray-200 text-lg font-medium">
+              Please{" "}
+              <Link to="/login" className="text-blue-600 font-semibold">
+                log in
+              </Link>{" "}
+              to leave a comment.
+            </p>
+          </div>
+        )}
 
         {/* BlogComment List */}
         {comments.length > 0 &&

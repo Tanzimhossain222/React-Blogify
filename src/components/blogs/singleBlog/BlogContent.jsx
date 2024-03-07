@@ -1,10 +1,12 @@
 import DOMPurify from "dompurify";
 import PropTypes from "prop-types";
+import { useNavigate } from "react-router-dom";
 import useAvatar from "../../../hooks/useAvatar";
 import DateFormate from "../../../utils/dateTimeFormate";
 
 const BlogContent = ({ singleBlog }) => {
   const authorAvatar = useAvatar(singleBlog?.author);
+  const navigation = useNavigate();
 
   // Sanitize HTML content
   const sanitizedContent = singleBlog?.content
@@ -17,7 +19,10 @@ const BlogContent = ({ singleBlog }) => {
       <div className="flex justify-center items-center my-4 gap-4">
         <div className="flex items-center capitalize space-x-2">
           <div className="avater-img bg-indigo-600 text-white">
-            <span className="">
+            <span
+              className=""
+              onClick={() => navigation(`/profile/${singleBlog?.author?.id}`)}
+            >
               {singleBlog?.author?.avatar ? (
                 <img
                   src={authorAvatar}
@@ -29,14 +34,17 @@ const BlogContent = ({ singleBlog }) => {
               )}
             </span>
           </div>
-          <h5 className="text-slate-500 text-sm">
+          <h5
+            className="text-slate-500 text-sm cursor-pointer"
+            onClick={() => navigation(`/profile/${singleBlog?.author?.id}`)}
+          >
             {singleBlog?.author?.firstName + " " + singleBlog?.author?.lastName}
           </h5>
         </div>
-        <span className="text-sm text-slate-700 dot">
+        <span className="text-sm text-slate-600 dot">
           {DateFormate(singleBlog?.createdAt)}
         </span>
-        <span className="text-sm text-slate-700 dot">
+        <span className="text-sm text-slate-600 dot">
           {singleBlog?.likes?.length} Likes
         </span>
       </div>

@@ -10,27 +10,32 @@ import SingleBlogPage from "./page/SingleBlogPage";
 import ProfileProvider from "./providers/ProfileProvider";
 import PrivateRoutes from "./routes/PrivateRoutes";
 
+import AuthorPage from "./page/AuthorPage";
 import EditBlogPage from "./page/EditBlogPage";
 import BlogProvider from "./providers/BlogProvider";
-import AuthorPage from "./page/AuthorPage";
+import PublicRoutes from "./routes/PublicRoutes";
 
 const App = () => {
   return (
     <BlogProvider>
       <ProfileProvider>
         <Routes>
-          <Route element={<PrivateRoutes />}>
+          <Route element={<PublicRoutes />}>
             <Route path="/" element={<HomePage />} />
-            <Route path="/createBlog" element={<CreateBlogPage />} />
+            <Route path="/search" element={<SearchPage />} />
+            <Route path="/profile/:userId" element={<AuthorPage />} />
+            <Route path="*" element={<NotFoundPage />} />
             <Route path="/singleBlog/:blogId" element={<SingleBlogPage />} />
-            <Route path="/profile" element={<ProfilePage />} />
-            <Route path="/profile/:userd" element={<AuthorPage />} />
+          </Route>
+
+          <Route element={<PrivateRoutes />}>
+            <Route path="/createBlog" element={<CreateBlogPage />} />
+            <Route path="/profile/me" element={<ProfilePage />} />
             <Route path="/blogEdit/:postId" element={<EditBlogPage />} />
           </Route>
-          <Route path="/search" element={<SearchPage />} />
+
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
-          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </ProfileProvider>
     </BlogProvider>
