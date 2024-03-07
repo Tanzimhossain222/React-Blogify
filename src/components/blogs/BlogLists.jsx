@@ -1,15 +1,14 @@
 //implemnt The infinity scroll here
 import { useEffect, useRef, useState } from "react";
 
+import axiosInstance from "../../axiosAPI/axiosInstance";
 import BlogCard from "./BlogCard";
-import axiosInstance from "../../api/axiosInstance";
 
 const BlogLists = () => {
   const [blogs, setBlogs] = useState([]);
   const [page, setPage] = useState(0);
   const [hasMore, setHasMore] = useState(true);
   const loaderRef = useRef(null);
-
 
   useEffect(() => {
     const fetchBlogs = async () => {
@@ -18,11 +17,10 @@ const BlogLists = () => {
 
       if (newBlogs.length === 0) {
         setHasMore(false);
-      }else {
+      } else {
         setBlogs((prevBlogs) => [...prevBlogs, ...newBlogs]);
         setPage((prevPage) => prevPage + 1);
       }
-      
     };
 
     const onIntersect = (items) => {

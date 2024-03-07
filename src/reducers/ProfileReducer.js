@@ -5,7 +5,6 @@ const initialProfileState = {
     blogs: [],
     loading: false,
     error: null,
-    singleBlog: null,
     blogAuthor: null,
 }
 

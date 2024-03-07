@@ -1,7 +1,8 @@
 import PropTypes from "prop-types";
 import { useCallback, useReducer } from "react";
 import actions from "../actions";
-import useAxios from "../api/useAxios";
+import publicAxios from "../axiosAPI/axiosInstance";
+import useAxios from "../axiosAPI/useAxios";
 import { BlogContext } from "../context";
 import { blogReducer, initialValues } from "../reducers/BlogReducer";
 
@@ -10,6 +11,52 @@ const BlogProvider = ({ children }) => {
 
   const { axiosInstance } = useAxios();
 
+  // Fetch all blogs
+  const fetchAllBlogs = useCallback(async () => {
+    try {
+      dispatch({ type: actions.blog.BLOG_FETCHING });
+
+      const res = await publicAxios.get("/blogs");
+      dispatch({
+        type: actions.blog.BLOG_FETCHED,
+        payload: res.data,
+      });
+    } catch (err) {
+      dispatch({
+        type: actions.blog.BLOG_FETCH_ERROR,
+        payload: err.message,
+      });
+    }
+  }, []);
+
+  // Fetch single blog
+  const fetchSingleBlog = useCallback(
+    async (id) => {
+      try {
+        dispatch({
+          type: actions.blog.BLOG_FETCHING,
+        });
+        const res = await publicAxios.get(`/blogs/${id}`);
+
+        if (res.status !== 200) {
+          throw new Error("An error occurred");
+        }
+
+        dispatch({
+          type: actions.blog.SINGLE_BLOG_FETCHED,
+          payload: res.data,
+        });
+      } catch (err) {
+        dispatch({
+          type: actions.blog.BLOG_FETCH_ERROR,
+          payload: err.message,
+        });
+      }
+    },
+    [axiosInstance, dispatch]
+  );
+
+  // Create a new blog
   const createBlog = async (blogData) => {
     try {
       dispatch({
@@ -40,6 +87,7 @@ const BlogProvider = ({ children }) => {
     }
   };
 
+  // Delete a blog
   const deleteBlog = async (blogId) => {
     try {
       dispatch({
@@ -64,6 +112,7 @@ const BlogProvider = ({ children }) => {
     }
   };
 
+  // Edit a blog
   const editBlog = async (blogData, Id) => {
     try {
       dispatch({
@@ -94,32 +143,7 @@ const BlogProvider = ({ children }) => {
     }
   };
 
-  const fetchSingleBlog = useCallback(
-    async (id) => {
-      try {
-        dispatch({
-          type: actions.blog.BLOG_FETCHING,
-        });
-        const res = await axiosInstance.get(`/blogs/${id}`);
-
-        if (res.status !== 200) {
-          throw new Error("An error occurred");
-        }
-
-        dispatch({
-          type: actions.blog.SINGLE_BLOG_FETCHED,
-          payload: res.data,
-        });
-      } catch (err) {
-        dispatch({
-          type: actions.blog.BLOG_FETCH_ERROR,
-          payload: err.message,
-        });
-      }
-    },
-    [axiosInstance, dispatch]
-  );
-
+  // Post a comment
   const postComment = async (content, blogId) => {
     try {
       const res = await axiosInstance.post(`/blogs/${blogId}/comment`, {
@@ -142,6 +166,7 @@ const BlogProvider = ({ children }) => {
     }
   };
 
+  // Delete a comment
   const deleteComment = async (commentId, blogId) => {
     try {
       const res = await axiosInstance.delete(
@@ -164,6 +189,7 @@ const BlogProvider = ({ children }) => {
     }
   };
 
+  // Like a blog
   const blogLiked = async (blogId) => {
     try {
       const res = await axiosInstance.post(`/blogs/${blogId}/like`);
@@ -186,6 +212,7 @@ const BlogProvider = ({ children }) => {
     }
   };
 
+  // Toggle favourite
   const toggleFavourite = async (blogId) => {
     try {
       const res = await axiosInstance.patch(`/blogs/${blogId}/favourite`);
@@ -205,6 +232,43 @@ const BlogProvider = ({ children }) => {
     }
   };
 
+  // search for blogs by query
+  const getSearchedBlogs = async (searchQuery) => {
+    try {
+      dispatch({
+        type: actions.blog.BLOG_FETCHING,
+      });
+
+      const res = await publicAxios.get(`/search?q=${searchQuery}`);
+      dispatch({
+        type: actions.blog.FETCH_SEARCH_DATA,
+        payload: res.data,
+      });
+    } catch (err) {
+      if (
+        err.message === "Cannot read properties of undefined (reading 'data')"
+      ) {
+        dispatch({
+          type: actions.blog.FETCH_SEARCH_DATA,
+          payload: [],
+        });
+      }
+
+      dispatch({
+        type: actions.blog.BLOG_FETCH_ERROR,
+        payload: err.message,
+      });
+    }
+  };
+
+  // clear search data
+  const clearSearchData = () => {
+    dispatch({
+      type: actions.blog.FETCH_SEARCH_DATA,
+      payload: [],
+    });
+  };
+
   return (
     <BlogContext.Provider
       value={{
@@ -218,6 +282,9 @@ const BlogProvider = ({ children }) => {
         deleteComment,
         blogLiked,
         toggleFavourite,
+        fetchAllBlogs,
+        getSearchedBlogs,
+        clearSearchData,
       }}
     >
       {children}

@@ -1,10 +1,10 @@
 import { useEffect } from "react";
 import BlogLists from "../components/blogs/BlogLists";
 import BlogSlider from "../components/blogs/BlogSlider";
-import useDisplayBlogs from "../hooks/useDisplayBlogs";
+import useBlogs from "../hooks/useBlogs";
 
 const HomePage = () => {
-  const { fetchAllBlogs } = useDisplayBlogs();
+  const { fetchAllBlogs } = useBlogs();
 
   useEffect(() => {
     fetchAllBlogs();

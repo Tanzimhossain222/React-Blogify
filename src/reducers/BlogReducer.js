@@ -5,6 +5,8 @@ const initialValues = {
     loading: false,
     error: null,
     singleBlog: {},
+    popularBlogs: [],
+    searchBlogs: [],
 }
 
 const blogReducer = (state = initialValues, action) => {
@@ -91,7 +93,7 @@ const blogReducer = (state = initialValues, action) => {
             }
         }
 
-        case actions.blog.BLOG_LIKED:{
+        case actions.blog.BLOG_LIKED: {
             return {
                 ...state,
                 singleBlog: {
@@ -102,7 +104,7 @@ const blogReducer = (state = initialValues, action) => {
             }
         }
 
-        case actions.blog.BLOG_FAVORITE:{
+        case actions.blog.BLOG_FAVORITE: {
             return {
                 ...state,
                 singleBlog: {
@@ -113,7 +115,14 @@ const blogReducer = (state = initialValues, action) => {
             }
         }
 
-    
+        case actions.blog.FETCH_SEARCH_DATA: {
+            return {
+                ...state,
+                searchBlogs: action.payload,
+                loading: false,
+            }
+        }
+
         default:
             return state
     }

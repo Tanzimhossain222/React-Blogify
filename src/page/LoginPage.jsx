@@ -1,11 +1,8 @@
 import LoginForm from "../components/auth/login/LoginForm";
-import Footer from "../components/footer/Footer";
-import Header from "../components/header/Header";
 
 const LoginPage = () => {
   return (
     <>
-      <Header />
       <main>
         <section className="container">
           <div className="w-full md:w-1/2 mx-auto bg-[#030317] p-8 rounded-md mt-12">
@@ -14,7 +11,6 @@ const LoginPage = () => {
           </div>
         </section>
       </main>
-      <Footer />
     </>
   );
 };

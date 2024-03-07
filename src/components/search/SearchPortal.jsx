@@ -1,13 +1,13 @@
+import PropTypes from "prop-types";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import closeIon from "../../assets/icons/close.svg";
-import useDisplayBlogs from "../../hooks/useDisplayBlogs";
+import useBlogs from "../../hooks/useBlogs";
 import SearchResultList from "./SearchResultList";
-import PropTypes from "prop-types";
 
 const SearchPortal = ({ onCloseModal }) => {
   const [searchQuery, setSearchQuery] = useState("");
-  const { getSearchedBlogs, state, clearSearchData } = useDisplayBlogs();
+  const { getSearchedBlogs, state, clearSearchData } = useBlogs();
   const { searchBlogs } = state;
 
   const timeoutRef = useRef(null);
@@ -96,7 +96,7 @@ const SearchPortal = ({ onCloseModal }) => {
 };
 
 SearchPortal.propTypes = {
-  onCloseModal: PropTypes.func
-}
+  onCloseModal: PropTypes.func,
+};
 
 export default SearchPortal;

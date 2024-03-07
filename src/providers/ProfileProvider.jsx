@@ -1,8 +1,8 @@
 import PropTypes from "prop-types";
 import { useCallback, useReducer } from "react";
 import actions from "../actions";
-import publicAxios from "../api/axiosInstance";
-import useAxios from "../api/useAxios";
+import publicAxios from "../axiosAPI/axiosInstance";
+import useAxios from "../axiosAPI/useAxios";
 import { ProfileContext } from "../context";
 import useLocalStorage from "../hooks/useLocalStorage";
 import {
@@ -131,7 +131,6 @@ const ProfileProvider = ({ children }) => {
       if (res.status !== 200) {
         throw new Error("An error occurred");
       }
-      console.log(blogId, "blogId");
       dispatch({
         type: actions.profile.PROFILE_BLOG_DELETED,
         payload: blogId,

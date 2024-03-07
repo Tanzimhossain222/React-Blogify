@@ -1,5 +1,5 @@
 // import { useState } from "react";
-// import axiosInstance from "../api/axiosInstance";
+// import axiosInstance from "../axiosAPI/axiosInstance";
 
 // const useBlogApi = (category='') => {
 //     const [blogs, setBlogs] = useState([]);

@@ -25,6 +25,7 @@ const App = () => {
             <Route path="/search" element={<SearchPage />} />
             <Route path="/profile/:userId" element={<AuthorPage />} />
             <Route path="*" element={<NotFoundPage />} />
+            <Route path="/login" element={<LoginPage />} />
             <Route path="/singleBlog/:blogId" element={<SingleBlogPage />} />
           </Route>
 
@@ -34,7 +35,6 @@ const App = () => {
             <Route path="/blogEdit/:postId" element={<EditBlogPage />} />
           </Route>
 
-          <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
         </Routes>
       </ProfileProvider>

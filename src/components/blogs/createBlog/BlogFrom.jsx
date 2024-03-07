@@ -63,10 +63,17 @@ const BlogForm = ({ EditBlog = null }) => {
       setImagePreview(null);
     } else {
       BlogInfo = await editBlog(blogData, EditBlog.id);
+      console.log(BlogInfo);
     }
 
     if (BlogInfo) {
-      const id = BlogInfo?.blog?.id;
+      let id;
+      if (!isEdit) {
+        id = BlogInfo?.blog?.id;
+      } else {
+        id = BlogInfo?.id;
+      }
+
       navigate(`/singleBlog/${id}`);
     }
   };

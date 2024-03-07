@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import useAxios from "../../api/useAxios";
+import useAxios from "../../axiosAPI/useAxios";
 
 const FavouriteBlogs = () => {
   const [favouriteBlogs, setFavouriteBlogs] = useState([]);

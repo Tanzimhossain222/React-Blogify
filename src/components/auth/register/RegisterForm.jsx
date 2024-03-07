@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import axiosInstance from "../../../api/axiosInstance";
+import axiosInstance from "../../../axiosAPI/axiosInstance";
 import Field from "../../../common/Field";
 
 const RegisterForm = () => {
@@ -16,7 +16,7 @@ const RegisterForm = () => {
   const handleSubmitForm = async (formData) => {
     try {
       const res = await axiosInstance.post("/auth/register", formData);
-      
+
       if (res.status !== 201) {
         throw new Error("An error occurred");
       }

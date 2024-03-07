@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { createPortal } from "react-dom";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import searchIcon from "../../assets/icons/search.svg";
 import logo from "../../assets/logo.svg";
 import useAuth from "../../hooks/useAuth";
@@ -15,6 +15,8 @@ const Header = () => {
   const user = useCurrentUser();
   const userAvatar = useAvatar(user);
   const navigate = useNavigate();
+
+  const location = useLocation();
 
   const isLogin = auth?.user ? true : false;
 
@@ -46,15 +48,17 @@ const Header = () => {
                 </Link>
               </li>
 
-              <li>
-                <span
-                  onClick={handleSearchClick}
-                  className="flex items-center gap-2 cursor-pointer"
-                >
-                  <img src={searchIcon} alt="Search" />
-                  <span>Search</span>
-                </span>
-              </li>
+              {location.pathname !== "/register" && (
+                <li>
+                  <span
+                    onClick={handleSearchClick}
+                    className="flex items-center gap-2 cursor-pointer"
+                  >
+                    <img src={searchIcon} alt="Search" />
+                    <span>Search</span>
+                  </span>
+                </li>
+              )}
 
               {/**
                * Conditional rendering of the login button & user avatar.

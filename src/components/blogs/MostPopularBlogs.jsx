@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import axiosInstance from "../../api/axiosInstance";
+import axiosInstance from "../../axiosAPI/axiosInstance";
 
 const MostPopularBlogs = () => {
   const [blogs, setBlogs] = useState([]);
