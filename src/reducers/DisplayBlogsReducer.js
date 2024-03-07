@@ -3,7 +3,7 @@ import actions from "../actions"
 const initialState = {
     blogs: [],
     popularBlogs: [],
-    searchResult: [],
+    searchBlogs: [],
     isLoading: false,
     error: null,
 }
@@ -40,8 +40,15 @@ const DisplayBlogsReducer = (state = initialState, action) => {
             }
         }
 
-      
+        case actions.display.SEARCH_DATA_FETCHED: {
+            return {
+                ...state,
+                searchBlogs: action.payload,
+                isLoading: false,
+            }
+        }
 
+    
         default: {
             return state
         }

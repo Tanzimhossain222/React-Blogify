@@ -1,19 +1,16 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import closeIon from "../../assets/icons/close.svg";
-import useBlogs from "../../hooks/useBlogs";
+import useDisplayBlogs from "../../hooks/useDisplayBlogs";
 import SearchResultList from "./SearchResultList";
-import LoadingSkeleton from "../../common/LoadingSkeleton";
+import PropTypes from "prop-types";
 
-const SearchPortal = () => {
+const SearchPortal = ({ onCloseModal }) => {
   const [searchQuery, setSearchQuery] = useState("");
+  const { getSearchedBlogs, state, clearSearchData } = useDisplayBlogs();
+  const { searchBlogs } = state;
 
-  const { getSearchedBlogs, state } = useBlogs();
-
-  const { searchBlogs, error, loading } = state;
-  //use debouncing to avoid multiple api calls on every key stroke, 500ms delay
   const timeoutRef = useRef(null);
-
   const handleSearchChange = (e) => {
     const value = e.target.value;
     setSearchQuery(value);
@@ -27,11 +24,19 @@ const SearchPortal = () => {
     }, 500);
   };
 
-  // Cleanup function to clear the timeout when the component unmounts
-  useEffect(() => {
-    return () => clearTimeout(timeoutRef.current);
-  }, []);
+  let totalBlogs = searchBlogs && searchBlogs?.data;
 
+  const handleClose = () => {
+    setSearchQuery("");
+    clearSearchData();
+    onCloseModal();
+  };
+
+  useEffect(() => {
+    return () => {
+      clearTimeout(timeoutRef.current);
+    };
+  }, []);
 
   return (
     <section className="absolute left-0 top-0 w-full h-full grid place-items-center bg-slate-800/50 backdrop-blur-sm z-50">
@@ -52,13 +57,27 @@ const SearchPortal = () => {
         {/* <!-- Search Result --> */}
         <div className="">
           <h3 className="text-slate-400 font-bold mt-6">Search Results</h3>
+          {totalBlogs && totalBlogs.length > 0 ? (
+            <p className="text-teal-500 text-center text-xl py-2 font-semibold">
+              Showing {totalBlogs.length} results for "{searchQuery}"
+            </p>
+          ) : (
+            searchQuery && (
+              <p className="text-rose-600 text-center text-xl font-bold">
+                No result found
+              </p>
+            )
+          )}
+
           <div className="my-4 divide-y-2 divide-slate-500/30 max-h-[440px] overflow-y-scroll overscroll-contain">
-            {searchBlogs?.data && searchBlogs?.data.length > 0 ? (
-              searchBlogs?.data.map(
+            {totalBlogs && totalBlogs.length > 0 ? (
+              totalBlogs.map(
                 (blog) => blog && <SearchResultList blog={blog} key={blog.id} />
               )
             ) : (
-              <p className="text-slate-400 text-center">No result found</p>
+              <p className="text-slate-400 text-center">
+                {!searchQuery && "Search Your result"}
+              </p>
             )}
           </div>
         </div>
@@ -68,11 +87,16 @@ const SearchPortal = () => {
             src={closeIon}
             alt="Close"
             className="absolute right-2 top-2 cursor-pointer w-8 h-8"
+            onClick={handleClose}
           />
         </Link>
       </div>
     </section>
   );
 };
+
+SearchPortal.propTypes = {
+  onCloseModal: PropTypes.func
+}
 
 export default SearchPortal;

@@ -2,7 +2,6 @@ import actions from "../actions"
 
 const initialValues = {
     blogs: [],
-    searchBlogs: [],
     loading: false,
     error: null,
     singleBlog: {},
@@ -114,15 +113,7 @@ const blogReducer = (state = initialValues, action) => {
             }
         }
 
-        case actions.blog.BLOG_SEARCH_RESULT: {
-            return {
-                ...state,
-                searchBlogs: action.payload,
-                loading: false,
-            }
-        }
-
-
+    
         default:
             return state
     }

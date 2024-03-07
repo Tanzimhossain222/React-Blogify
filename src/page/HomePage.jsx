@@ -8,7 +8,8 @@ const HomePage = () => {
 
   useEffect(() =>{
     fetchAllBlogs();
-  },[])
+    console.log("Fetching all blogs");
+  },[fetchAllBlogs])
 
 
   return (

@@ -205,36 +205,6 @@ const BlogProvider = ({ children }) => {
     }
   };
 
-  const getSearchedBlogs = async (searchQuery) => {
-    try {
-      dispatch({
-        type: actions.blog.BLOG_FETCHING,
-      });
-
-      const res = await axiosInstance.get(`/search?q=${searchQuery}`);
-
-      dispatch({
-        type: actions.blog.BLOG_SEARCH_RESULT,
-        payload: res.data,
-      });
-    } catch (err) {
-      if (
-        err.message === "Cannot read properties of undefined (reading 'data')"
-      ) {
-        
-        dispatch({
-          type: actions.blog.BLOG_SEARCH_RESULT,
-          payload: [],
-        });
-      }
-
-      dispatch({
-        type: actions.blog.BLOG_FETCH_ERROR,
-        payload: err.message,
-      });
-    }
-  };
-
   return (
     <BlogContext.Provider
       value={{
@@ -248,7 +218,6 @@ const BlogProvider = ({ children }) => {
         deleteComment,
         blogLiked,
         toggleFavourite,
-        getSearchedBlogs,
       }}
     >
       {children}
