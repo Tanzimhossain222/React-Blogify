@@ -8,19 +8,22 @@ import likeFilledIcon from "../../../assets/icons/like-filled.svg";
 import likeIcon from "../../../assets/icons/like.svg";
 import useAuth from "../../../hooks/useAuth";
 import useBlogs from "../../../hooks/useBlogs";
+import useProfile from "../../../hooks/useProfile";
 
 const SingleBlogAction = ({ singleBlog }) => {
   const { blogLiked, toggleFavourite, state } = useBlogs();
+  // console.log(favourites, "favourites");
+  // console.log(useAuth());
   const {
     auth: { user },
   } = useAuth();
 
-  const liked = user
-    ? singleBlog?.likes?.find((like) => like.id === user.id)
-    : false;
+  // const liked = user
+  //   ? singleBlog?.likes?.find((like) => like.id === user.id)
+  //   : false;
 
   const [toggleFav, setToggleFav] = useState(false);
-  const [isLike, setIsLike] = useState(liked);
+  const [isLike, setIsLike] = useState(false);
 
   const handleLike = async () => {
     try {
@@ -38,22 +41,30 @@ const SingleBlogAction = ({ singleBlog }) => {
     }
   };
 
-  const handleFavourite = () => {
-    if (!user) {
-      toast.error("Please log in to favorite this blog.", {
-        position: "top-center",
-        autoClose: 2500,
-      });
-      return;
+  const handleFavourite = async () => {
+    try {
+      if (!user) {
+        toast.error("Please log in to favorite this blog.", {
+          position: "top-center",
+          autoClose: 2500,
+        });
+        return;
+      }
+      const data = await toggleFavourite(singleBlog.id);
+      setToggleFav(data);
+    } catch (err) {
+      console.error(err);
     }
-    toggleFavourite(singleBlog.id);
-    setToggleFav(!toggleFav);
   };
 
   useEffect(() => {
+    const isLiked = state?.singleBlog?.likes?.find((like) => like.id === user?.id);
     const isFavourite = state?.singleBlog?.isFavourite;
+    // console.log(isFavourite, "isFavourite");
     setToggleFav(isFavourite);
-  }, [state?.singleBlog?.isFavourite]);
+    setIsLike(isLiked);
+
+  }, [state?.singleBlog?.isFavourite, user?.id, state?.singleBlog?.likes]);
 
   return (
     <div className="floating-action">
@@ -69,7 +80,7 @@ const SingleBlogAction = ({ singleBlog }) => {
 
         <li>
           <img
-            src={!toggleFav ? unFavouriteIcon : favouriteIcon}
+            src={toggleFav ? favouriteIcon : unFavouriteIcon}
             alt="Favourite"
             onClick={handleFavourite}
           />

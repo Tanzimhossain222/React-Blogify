@@ -140,6 +140,7 @@ const BlogForm = ({ EditBlog = null }) => {
             style={{ display: "none" }}
             onChange={handleFileChange}
             accept="image/*"
+            
           />
         </div>
       </div>

@@ -22,11 +22,12 @@ const blogReducer = (state = initialValues, action) => {
             return {
                 ...state,
                 loading: false,
-                blogs: action.payload,
+                blogs: action.payload.blogs,
             }
         }
 
         case actions.blog.BLOG_CREATED: {
+            console.log(action.payload, "payload");
             return {
                 ...state,
                 blogs: [action.payload, ...state.blogs],
@@ -123,7 +124,7 @@ const blogReducer = (state = initialValues, action) => {
             }
         }
 
-        case actions.blog.CLEAR_SINGLE_BLOG:{
+        case actions.blog.CLEAR_SINGLE_BLOG: {
             return {
                 ...state,
                 singleBlog: {},

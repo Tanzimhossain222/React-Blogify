@@ -27,8 +27,7 @@ const MostPopularBlogs = () => {
     //when component is unmounted, clear the blogs
     return () => {
       setBlogs([]);
-    }
-
+    };
   }, [state.limit]);
 
   const handleClick = () => {

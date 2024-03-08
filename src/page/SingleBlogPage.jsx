@@ -5,6 +5,7 @@ import BlogCommentList from "../components/blogs/singleBlog/BlogCommentList";
 import BlogContent from "../components/blogs/singleBlog/BlogContent";
 import SingleBlogAction from "../components/blogs/singleBlog/SingleBlogAction";
 import useBlogs from "../hooks/useBlogs";
+import LoadingSkeleton from "../common/LoadingSkeleton";
 
 const SingleBlogPage = () => {
   const { blogId } = useParams();
@@ -22,7 +23,7 @@ const SingleBlogPage = () => {
   }, [blogId, fetchSingleBlog, dispatch]);
 
   if (state.loading) {
-    return <h1>Loading...</h1>;
+    return <LoadingSkeleton />;
   }
 
   const { singleBlog } = state;
