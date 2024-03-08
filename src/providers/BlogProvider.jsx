@@ -53,7 +53,7 @@ const BlogProvider = ({ children }) => {
         });
       }
     },
-    [axiosInstance, dispatch]
+    [dispatch]
   );
 
   // Create a new blog
@@ -268,6 +268,7 @@ const BlogProvider = ({ children }) => {
       payload: [],
     });
   };
+
 
   return (
     <BlogContext.Provider

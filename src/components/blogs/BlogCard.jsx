@@ -32,7 +32,10 @@ const BlogCard = ({ blog }) => {
       />
 
       <div className="mt-2 relative">
-        <h3 className="text-slate-300 text-xl lg:text-2xl"> {blog?.title} </h3>
+        <h3 className="text-slate-300 text-xl lg:text-2xl hover:text-slate-400 ">
+          {" "}
+          {blog?.title}{" "}
+        </h3>
         <p className="mb-6 text-base text-slate-500 mt-1">
           {blog?.content?.substring(0, 250)}...
         </p>
@@ -64,7 +67,7 @@ const BlogCard = ({ blog }) => {
                 to={`/Profile/${blog?.author?.id}`}
                 onClick={handleProfileClick}
               >
-                <h5 className="text-slate-500 text-sm">{`${blog?.author?.firstName} ${blog?.author?.lastName}`}</h5>
+                <h5 className="text-slate-500 text-sm  hover:underline">{`${blog?.author?.firstName} ${blog?.author?.lastName}`}</h5>
               </Link>
               <div className="flex items-center text-xs text-slate-500">
                 <span>{DateFormate(blog?.createdAt)}</span>

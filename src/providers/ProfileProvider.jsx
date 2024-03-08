@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import { useCallback, useReducer } from "react";
 import actions from "../actions";
-import publicAxios from "../axiosAPI/axiosInstance";
+// import publicAxios from "../axiosAPI/axiosInstance";
 import useAxios from "../axiosAPI/useAxios";
 import { ProfileContext } from "../context";
 import useLocalStorage from "../hooks/useLocalStorage";
@@ -15,9 +15,20 @@ const ProfileProvider = ({ children }) => {
   const { axiosInstance } = useAxios();
   const { setLocalStorage, getLocalStorage } = useLocalStorage();
 
-  // Fetch user profile data
+  /**
+   * Fetch profile data for the user
+   * if isMe is true, it will fetch the user's profile data
+   * if isMe is false, it will fetch the author's profile data
+   * @param {string} id
+   * @param {boolean} isMe
+   * @returns {Promise}
+   * @throws {Error}
+   * @example
+   * fetchProfileData("user-id", true);
+   * fetchProfileData("author-id", false);
+   */
   const fetchProfileData = useCallback(
-    async (id) => {
+    async (id, isMe = true) => {
       dispatch({ type: actions.profile.DATA_FETCHING });
 
       try {
@@ -37,11 +48,18 @@ const ProfileProvider = ({ children }) => {
             blogs: res.data.blogs,
           };
 
-          dispatch({
-            type: actions.profile.DATA_FETCHED,
-            payload: formattedData,
-          });
-
+          if (isMe) {
+            dispatch({
+              type: actions.profile.DATA_FETCHED,
+              payload: formattedData,
+            });
+          } else {
+            delete formattedData.user.favourites;
+            dispatch({
+              type: actions.profile.FETCH_BLOG_AUTHOR,
+              payload: formattedData,
+            });
+          }
           return formattedData;
         }
       } catch (err) {
@@ -143,39 +161,6 @@ const ProfileProvider = ({ children }) => {
     }
   };
 
-  //fetch blog author
-  const fetchBlogAuthor = async (id) => {
-    // dispatch({ type: actions.profile.DATA_FETCHING });
-
-    try {
-      const res = await publicAxios.get(`/profile/${id}`);
-      if (res.status === 200) {
-        const formattedData = {
-          blogAuthor: {
-            id: res.data.id,
-            email: res.data.email,
-            firstName: res.data.firstName,
-            lastName: res.data.lastName,
-            avatar: res.data.avatar,
-            bio: res.data.bio,
-          },
-          blogs: res.data.blogs,
-        };
-
-        dispatch({
-          type: actions.profile.FETCH_BLOG_AUTHOR,
-          payload: formattedData,
-        });
-        return formattedData;
-      }
-    } catch (err) {
-      dispatch({
-        type: actions.profile.DATE_FETCH_ERROR,
-        payload: err.message,
-      });
-    }
-  };
-
   return (
     <>
       <ProfileContext.Provider
@@ -186,7 +171,6 @@ const ProfileProvider = ({ children }) => {
           handleImageChange,
           handleUserDataEdit,
           deleteBlog,
-          fetchBlogAuthor,
         }}
       >
         {children}

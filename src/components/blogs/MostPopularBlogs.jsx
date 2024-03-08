@@ -4,15 +4,50 @@ import axiosInstance from "../../axiosAPI/axiosInstance";
 
 const MostPopularBlogs = () => {
   const [blogs, setBlogs] = useState([]);
+  const [state, setState] = useState({
+    limit: 5,
+    hasMore: true,
+    total: 0,
+    page: 1,
+  });
 
   useEffect(() => {
     async function fetchPopularBlogs() {
-      const res = await axiosInstance.get("blogs/popular?page=2&limit=5");
-      setBlogs(res.data?.blogs);
+      try {
+        const res = await axiosInstance.get(
+          `blogs/popular?limit=${state.limit}`
+        );
+        setBlogs(res.data?.blogs);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+    fetchPopularBlogs();
+
+    //when component is unmounted, clear the blogs
+    return () => {
+      setBlogs([]);
     }
 
-    fetchPopularBlogs();
-  }, []);
+  }, [state.limit]);
+
+  const handleClick = () => {
+    if (state.hasMore) {
+      const blogLength = blogs.length;
+      setState((prevState) => ({
+        ...prevState,
+        limit: prevState.limit + 5,
+        total: blogLength,
+        hasMore: prevState.total === blogLength ? false : true,
+      }));
+    } else {
+      setState((prevState) => ({
+        ...prevState,
+        limit: 5,
+        hasMore: true,
+      }));
+    }
+  };
 
   return (
     <div className="sidebar-card">
@@ -25,14 +60,14 @@ const MostPopularBlogs = () => {
           blogs?.map((blog) => (
             <li key={blog.id}>
               <Link to={`/singleBlog/${blog?.id}`}>
-                <h3 className="text-slate-400 font-medium hover:text-slate-300 transition-all cursor-pointer">
+                <h3 className="text-slate-500 hover:text-slate-600 font-medium transition-all cursor-pointer">
                   {blog.title}
                 </h3>
               </Link>
-              <p className="text-slate-600 text-sm ">
-                by
+              <p className="text-slate-600 text-sm">
+                by{" "}
                 <Link to={`/Profile/${blog.author?.id}`}>
-                  <span className="hover:text-slate-500">
+                  <span className="hover:underline">
                     {blog.author?.firstName + " " + blog.author?.lastName}{" "}
                   </span>
                 </Link>
@@ -41,6 +76,10 @@ const MostPopularBlogs = () => {
             </li>
           ))}
       </ul>
+
+      <button onClick={handleClick}>
+        {state.hasMore ? "Show More" : "Show Less"} Blogs
+      </button>
     </div>
   );
 };

@@ -23,6 +23,11 @@ const ProfileBio = ({ user }) => {
   // Update bio state when the user prop changes
   useEffect(() => {
     setBio(user?.bio || "");
+
+    //when component is unmounted, clear the bio
+    return () => {
+      setBio("");
+    }
   }, [user]);
 
   return (

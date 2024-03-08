@@ -39,7 +39,7 @@ const BlogComment = ({ comment, postId }) => {
       <div className="w-full">
         <div className="flex justify-between">
           <h5
-            className="text-slate-500 font-bold  cursor-pointer"
+            className="text-slate-500 font-bold  cursor-pointer hover:text-slate-600 hover:underline"
             onClick={() => navigation(`/profile/${comment?.author?.id}`)}
           >
             {comment.author.firstName + " " + comment.author.lastName}

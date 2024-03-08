@@ -44,37 +44,41 @@ const BlogForm = ({ EditBlog = null }) => {
   };
 
   const handleFormSubmit = async (formData) => {
-    let blogData = new FormData();
-    let BlogInfo;
-    // Add title, content, and tags to formData
-    blogData.append("title", formData.title);
-    blogData.append("content", formData.content);
-    blogData.append("tags", formData.tags);
+    try {
+      let blogData = new FormData();
+      let BlogInfo;
+      // Add title, content, and tags to formData
+      blogData.append("title", formData.title);
+      blogData.append("content", formData.content);
+      blogData.append("tags", formData.tags);
 
-    // Add image to formData
-    if (fileUploadRef.current.files[0]) {
-      blogData.append("thumbnail", fileUploadRef.current.files[0]);
-    }
-
-    // check if it is edit or create
-    if (!isEdit) {
-      BlogInfo = await createBlog(blogData);
-      reset();
-      setImagePreview(null);
-    } else {
-      BlogInfo = await editBlog(blogData, EditBlog.id);
-      console.log(BlogInfo);
-    }
-
-    if (BlogInfo) {
-      let id;
-      if (!isEdit) {
-        id = BlogInfo?.blog?.id;
-      } else {
-        id = BlogInfo?.id;
+      // Add image to formData
+      if (fileUploadRef.current.files[0]) {
+        blogData.append("thumbnail", fileUploadRef.current.files[0]);
       }
 
-      navigate(`/singleBlog/${id}`);
+      // check if it is edit or create
+      if (!isEdit) {
+        BlogInfo = await createBlog(blogData);
+        reset();
+        setImagePreview(null);
+      } else {
+        BlogInfo = await editBlog(blogData, EditBlog.id);
+        console.log(BlogInfo);
+      }
+
+      if (BlogInfo) {
+        let id;
+        if (!isEdit) {
+          id = BlogInfo?.blog?.id;
+        } else {
+          id = BlogInfo?.id;
+        }
+
+        navigate(`/singleBlog/${id}`);
+      }
+    } catch (err) {
+      console.error(err);
     }
   };
 

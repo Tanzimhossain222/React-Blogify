@@ -123,6 +123,13 @@ const blogReducer = (state = initialValues, action) => {
             }
         }
 
+        case actions.blog.CLEAR_SINGLE_BLOG:{
+            return {
+                ...state,
+                singleBlog: {},
+            }
+        }
+
         default:
             return state
     }

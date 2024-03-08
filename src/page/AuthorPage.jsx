@@ -8,7 +8,7 @@ import useProfile from "../hooks/useProfile";
 
 const AuthorPage = () => {
   const { userId } = useParams();
-  const { state, fetchBlogAuthor } = useProfile();
+  const { state, fetchProfileData } = useProfile();
   const isMe = useAuthCheck(userId);
   const navigation = useNavigate();
 
@@ -18,9 +18,10 @@ const AuthorPage = () => {
 
   useEffect(() => {
     if (userId) {
-      fetchBlogAuthor(userId);
+      fetchProfileData(userId, false);
     }
-  }, [userId]);
+
+  }, [userId,fetchProfileData]);
 
   if (state?.loading) {
     return <LoadingSkeleton />;

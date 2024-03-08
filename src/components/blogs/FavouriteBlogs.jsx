@@ -9,14 +9,28 @@ const FavouriteBlogs = () => {
 
   useEffect(() => {
     const fetchFavouriteBlogs = async () => {
-      const res = await axiosInstance.get("/blogs/favourites");
-      const data = res.data.blogs;
+      try {
+        const res = await axiosInstance.get("/blogs/favourites");
+        if (res.status !== 200) {
+          return;
+        }
 
-      if (data.length > 0) {
-        setFavouriteBlogs(data);
+        const data = res.data.blogs;
+
+        if (data.length > 0) {
+          setFavouriteBlogs(data);
+        }
+      } catch (error) {
+        console.error(error);
       }
     };
     fetchFavouriteBlogs();
+
+    //when component is unmounted, clear the favourite blogs
+    return () => {
+      setFavouriteBlogs([]);
+    };
+
   }, [axiosInstance]);
 
   return (
@@ -33,7 +47,7 @@ const FavouriteBlogs = () => {
               onClick={() => navigation(`/singleBlog/${blog.id}`)}
               className="cursor-pointer"
             >
-              <h3 className="text-slate-400 font-medium hover:text-slate-300 transition-all">
+              <h3 className="text-slate-400 font-medium hover:text-slate-500 transition-all">
                 {blog.title}
               </h3>
               <p className="text-slate-600 text-sm">{blog.tags}</p>

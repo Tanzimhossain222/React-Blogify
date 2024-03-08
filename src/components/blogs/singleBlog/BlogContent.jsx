@@ -35,7 +35,7 @@ const BlogContent = ({ singleBlog }) => {
             </span>
           </div>
           <h5
-            className="text-slate-500 text-sm cursor-pointer"
+            className="text-slate-500 text-sm cursor-pointer hover:text-slate-600 hover:underline"
             onClick={() => navigation(`/profile/${singleBlog?.author?.id}`)}
           >
             {singleBlog?.author?.firstName + " " + singleBlog?.author?.lastName}

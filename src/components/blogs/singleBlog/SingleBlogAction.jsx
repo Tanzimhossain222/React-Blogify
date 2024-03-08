@@ -23,15 +23,19 @@ const SingleBlogAction = ({ singleBlog }) => {
   const [isLike, setIsLike] = useState(liked);
 
   const handleLike = async () => {
-    if (!user) {
-      toast.error("Please log in to like this blog.", {
-        position: "top-center",
-        autoClose: 2500,
-      });
-      return;
+    try {
+      if (!user) {
+        toast.error("Please log in to like this blog.", {
+          position: "top-center",
+          autoClose: 2500,
+        });
+        return;
+      }
+      const data = await blogLiked(singleBlog.id);
+      setIsLike(data);
+    } catch (err) {
+      console.error(err);
     }
-    const data = await blogLiked(singleBlog.id);
-    setIsLike(data);
   };
 
   const handleFavourite = () => {

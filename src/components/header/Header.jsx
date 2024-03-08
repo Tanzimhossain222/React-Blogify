@@ -96,7 +96,7 @@ const Header = () => {
                       </span>
                     </div>
 
-                    <span className="text-white ml-2 cursor-pointer">
+                    <span className="text-white ml-2 cursor-pointer hover:text-gray-200">
                       {user?.firstName + " " + user?.lastName}{" "}
                     </span>
                   </li>

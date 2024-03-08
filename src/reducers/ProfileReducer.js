@@ -64,7 +64,7 @@ const profileReducer = (state = initialProfileState, action) => {
             return {
                 ...state,
                 loading: false,
-                blogAuthor: action.payload.blogAuthor,
+                blogAuthor: action.payload.user,
                 blogs: action.payload.blogs,
                 user: null
             }
