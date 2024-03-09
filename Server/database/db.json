@@ -1,0 +1,63 @@
+{
+  "users": [
+    {
+      "id": "72a5aa2fc66dc2eae872",
+      "email": "tanzimx@gmail.com",
+      "firstName": "Tanzim",
+      "lastName": "Hossain",
+      "avatar": "",
+      "bio": "",
+      "password": "$2b$08$ANEAlrMvlDnygdTFWt.k5elYUWYQd7rUOnCtlmeSBCeK81ZMr3LYW",
+      "favourites": []
+    },
+    {
+      "id": "47b78b12469146d43cea",
+      "email": "tanzimhossain2@gmail.com",
+      "firstName": "Tanzim",
+      "lastName": "Hossain",
+      "avatar": "avatar-1709967725001-701288734.jpeg",
+      "bio": "Nothing to say about me 😎",
+      "password": "$2b$08$f7ZXta6KJ8F8qZjkY481JuiUNBBu7fH8/3KnnFuHJ4jNS46C5gikW",
+      "favourites": [
+        {
+          "id": "d309d8f315e403efaca4",
+          "title": "Artificial intelligence",
+          "tags": "AI, Artificial, ChatGPT"
+        }
+      ]
+    }
+  ],
+  "blogs": [
+    {
+      "id": "d309d8f315e403efaca4",
+      "title": "Artificial intelligence",
+      "content": "Artificial intelligence is the simulation of human intelligence processes by machines, especially computer systems. Specific applications of AI include expert systems, natural language processing, speech recognition and machine vision.",
+      "thumbnail": "thumbnail-1709967812694-260843370.jpg",
+      "author": {
+        "id": "47b78b12469146d43cea",
+        "firstName": "Tanzim",
+        "lastName": "Hossain",
+        "avatar": "avatar-1709967725001-701288734.jpeg"
+      },
+      "tags": "AI, Artificial, ChatGPT",
+      "likes": [
+        {
+          "id": "47b78b12469146d43cea"
+        }
+      ],
+      "comments": [
+        {
+          "id": "a1141bfd563ba121cba3",
+          "content": "Artificial intelligence is the intelligence of machines or software, as opposed to the intelligence of living beings, primarily of humans. It is a field of study in computer science that develops and studies intelligent machines. Such machines may be called AIs.",
+          "author": {
+            "id": "47b78b12469146d43cea",
+            "firstName": "Tanzim",
+            "lastName": "Hossain",
+            "avatar": "avatar-1709967725001-701288734.jpeg"
+          }
+        }
+      ],
+      "createdAt": "2024-03-09T07:03:32.701Z"
+    }
+  ]
+}
