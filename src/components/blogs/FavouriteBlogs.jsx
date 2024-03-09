@@ -30,7 +30,6 @@ const FavouriteBlogs = () => {
     return () => {
       setFavouriteBlogs([]);
     };
-
   }, [axiosInstance]);
 
   return (
