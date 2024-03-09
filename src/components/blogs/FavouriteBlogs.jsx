@@ -16,6 +16,7 @@ const FavouriteBlogs = () => {
         }
 
         const data = res.data.blogs;
+        console.log(data);
 
         if (data.length > 0) {
           setFavouriteBlogs(data);

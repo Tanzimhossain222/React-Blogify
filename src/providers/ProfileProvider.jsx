@@ -153,6 +153,7 @@ const ProfileProvider = ({ children }) => {
         type: actions.profile.PROFILE_BLOG_DELETED,
         payload: blogId,
       });
+      return res.data.message;
     } catch (err) {
       dispatch({
         type: actions.profile.DATE_FETCH_ERROR,

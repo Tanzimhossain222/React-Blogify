@@ -76,7 +76,7 @@ const MostPopularBlogs = () => {
           ))}
       </ul>
 
-      <button onClick={handleClick}>
+      <button onClick={handleClick} className="text-slate-400 hover:underline">
         {state.hasMore ? "Show More" : "Show Less"} Blogs
       </button>
     </div>

@@ -72,7 +72,7 @@ const SearchPortal = ({ onCloseModal }) => {
           <div className="my-4 divide-y-2 divide-slate-500/30 max-h-[440px] overflow-y-scroll overscroll-contain">
             {totalBlogs && totalBlogs.length > 0 ? (
               totalBlogs.map(
-                (blog) => blog && <SearchResultList blog={blog} key={blog.id} />
+                (blog) => blog && <SearchResultList blog={blog} key={blog.id} onClose={handleClose} />
               )
             ) : (
               <p className="text-slate-400 text-center">
@@ -82,14 +82,14 @@ const SearchPortal = ({ onCloseModal }) => {
           </div>
         </div>
 
-        <Link to="/">
+        {/* <Link to="/"> */}
           <img
             src={closeIon}
             alt="Close"
             className="absolute right-2 top-2 cursor-pointer w-8 h-8"
             onClick={handleClose}
           />
-        </Link>
+       
       </div>
     </section>
   );

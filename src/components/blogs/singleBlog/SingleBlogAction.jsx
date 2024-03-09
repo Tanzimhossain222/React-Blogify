@@ -8,19 +8,30 @@ import likeFilledIcon from "../../../assets/icons/like-filled.svg";
 import likeIcon from "../../../assets/icons/like.svg";
 import useAuth from "../../../hooks/useAuth";
 import useBlogs from "../../../hooks/useBlogs";
-import useProfile from "../../../hooks/useProfile";
+import useLocalStorage from "../../../hooks/useLocalStorage";
+
 
 const SingleBlogAction = ({ singleBlog }) => {
   const { blogLiked, toggleFavourite, state } = useBlogs();
-  // console.log(favourites, "favourites");
-  // console.log(useAuth());
   const {
     auth: { user },
   } = useAuth();
 
-  // const liked = user
-  //   ? singleBlog?.likes?.find((like) => like.id === user.id)
-  //   : false;
+  const { getLocalStorage } = useLocalStorage();
+  const localUser = getLocalStorage("user", true);
+
+  const isFav = localUser?.favourites?.find((fav) => fav.id === singleBlog.id);
+
+  const isLiked = singleBlog?.likes?.find((like) => like.id === user?.id);
+
+  useEffect(() => {
+    if (isFav) {
+      setToggleFav(true);
+    }
+    if (isLiked) {
+      setIsLike(true);
+    }
+  }, [isFav, isLiked]);
 
   const [toggleFav, setToggleFav] = useState(false);
   const [isLike, setIsLike] = useState(false);
@@ -34,8 +45,8 @@ const SingleBlogAction = ({ singleBlog }) => {
         });
         return;
       }
-      const data = await blogLiked(singleBlog.id);
-      setIsLike(data);
+      await blogLiked(singleBlog.id);
+      setIsLike((prev) => !prev);
     } catch (err) {
       console.error(err);
     }
@@ -50,21 +61,20 @@ const SingleBlogAction = ({ singleBlog }) => {
         });
         return;
       }
-      const data = await toggleFavourite(singleBlog.id);
-      setToggleFav(data);
+      await toggleFavourite(singleBlog.id);
+      setToggleFav((prev) => !prev);
+      toast.success(
+        `Blog has been ${
+          !toggleFav ? "added to" : "removed from"
+        } your favourites.`,
+        {
+          position: "top-right",
+          autoClose: 800,
+        })
     } catch (err) {
       console.error(err);
     }
   };
-
-  useEffect(() => {
-    const isLiked = state?.singleBlog?.likes?.find((like) => like.id === user?.id);
-    const isFavourite = state?.singleBlog?.isFavourite;
-    // console.log(isFavourite, "isFavourite");
-    setToggleFav(isFavourite);
-    setIsLike(isLiked);
-
-  }, [state?.singleBlog?.isFavourite, user?.id, state?.singleBlog?.likes]);
 
   return (
     <div className="floating-action">

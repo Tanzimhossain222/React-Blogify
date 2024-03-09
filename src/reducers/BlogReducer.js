@@ -22,15 +22,21 @@ const blogReducer = (state = initialValues, action) => {
             return {
                 ...state,
                 loading: false,
-                blogs: action.payload.blogs,
+                blogs: action.payload,
+            }
+        }
+        case actions.blog.DELETE_A_BLOG: {
+            return {
+                ...state,
+                loading: false,
+                blogs: state.blogs.filter((blog) => blog.id !== action.payload)
             }
         }
 
         case actions.blog.BLOG_CREATED: {
-            console.log(action.payload, "payload");
             return {
                 ...state,
-                blogs: [action.payload, ...state.blogs],
+                blogs: [action.payload.blog, ...state.blogs],
                 loading: false,
             }
         }
@@ -46,6 +52,7 @@ const blogReducer = (state = initialValues, action) => {
         case actions.blog.BLOG_EDITED: {
             return {
                 ...state,
+                loading: false,
                 blogs: state.blogs.map((blog) => {
                     if (blog.id === action.payload.id) {
                         return action.payload

@@ -14,6 +14,8 @@ const BlogComment = ({ comment, postId }) => {
   const commentAvatar = useAvatar(comment.author);
 
   const handleDeleteComment = (commentId) => {
+
+    window.confirm("Are you sure you want to delete this comment?") &&
     deleteComment(commentId, postId);
   };
 

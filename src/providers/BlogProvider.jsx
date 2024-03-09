@@ -4,30 +4,67 @@ import actions from "../actions";
 import publicAxios from "../axiosAPI/axiosInstance";
 import useAxios from "../axiosAPI/useAxios";
 import { BlogContext } from "../context";
+import useLocalStorage from "../hooks/useLocalStorage";
 import { blogReducer, initialValues } from "../reducers/BlogReducer";
 
 const BlogProvider = ({ children }) => {
   const [state, dispatch] = useReducer(blogReducer, initialValues);
+  const { setLocalStorage, getLocalStorage } = useLocalStorage();
 
   const { axiosInstance } = useAxios();
 
-  // Fetch all blogs
-  const fetchAllBlogs = useCallback(async () => {
-    try {
-      dispatch({ type: actions.blog.BLOG_FETCHING });
-
-      const res = await publicAxios.get("/blogs");
+  //home Page blogs
+  const fetchBlogs = useCallback(
+    (items) => {
       dispatch({
         type: actions.blog.BLOG_FETCHED,
-        payload: res.data,
+        payload: items,
       });
+    },
+    [dispatch]
+  );
+
+  //delete a blog
+  const removeBlog = async (blogId) => {
+    try {
+      dispatch({
+        type: actions.blog.BLOG_FETCHING,
+      });
+
+      const res = await axiosInstance.delete(`/blogs/${blogId}`);
+      if (res.status !== 200) {
+        throw new Error("An error occurred");
+      }
+      dispatch({
+        type: actions.blog.DELETE_A_BLOG,
+        payload: blogId,
+      });
+      return res.data.message;
     } catch (err) {
       dispatch({
         type: actions.blog.BLOG_FETCH_ERROR,
         payload: err.message,
       });
     }
-  }, []);
+  };
+
+  // Fetch all blogs
+  // const fetchAllBlogs = useCallback(async () => {
+  //   try {
+  //     dispatch({ type: actions.blog.BLOG_FETCHING });
+
+  //     const res = await publicAxios.get("/blogs");
+  //     dispatch({
+  //       type: actions.blog.BLOG_FETCHED,
+  //       payload: res.data,
+  //     });
+  //   } catch (err) {
+  //     dispatch({
+  //       type: actions.blog.BLOG_FETCH_ERROR,
+  //       payload: err.message,
+  //     });
+  //   }
+  // }, []);
 
   // Fetch single blog
   const fetchSingleBlog = useCallback(
@@ -104,6 +141,8 @@ const BlogProvider = ({ children }) => {
         type: actions.blog.BLOG_DELETED,
         payload: blogId,
       });
+
+      return res.data.message;
     } catch (err) {
       dispatch({
         type: actions.blog.BLOG_FETCH_ERROR,
@@ -220,6 +259,29 @@ const BlogProvider = ({ children }) => {
         throw new Error("An error occurred");
       }
 
+      const formattedData = {
+        id: res.data.id,
+        tags: res.data.tags,
+        title: res.data.title,
+      };
+
+      // update local storage with the new favourite data
+      if (res.data.isFavourite) {
+        const data = getLocalStorage("user", true);
+        const newData = {
+          ...data,
+          favourites: [...data.favourites, formattedData],
+        };
+        setLocalStorage("user", newData, true);
+      } else {
+        const data = getLocalStorage("user", true);
+        const newData = {
+          ...data,
+          favourites: data.favourites.filter((fav) => fav.id !== blogId),
+        };
+        setLocalStorage("user", newData, true);
+      }
+
       dispatch({
         type: actions.blog.BLOG_FAVORITE,
         payload: res.data.isFavourite,
@@ -269,7 +331,6 @@ const BlogProvider = ({ children }) => {
     });
   };
 
-
   return (
     <BlogContext.Provider
       value={{
@@ -283,9 +344,11 @@ const BlogProvider = ({ children }) => {
         deleteComment,
         blogLiked,
         toggleFavourite,
-        fetchAllBlogs,
+        // fetchAllBlogs,
         getSearchedBlogs,
         clearSearchData,
+        fetchBlogs,
+        removeBlog,
       }}
     >
       {children}

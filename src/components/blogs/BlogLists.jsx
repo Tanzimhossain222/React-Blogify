@@ -1,12 +1,20 @@
 import { useEffect } from "react";
+import useBlogs from "../../hooks/useBlogs";
 import useInfiniteScroll from "../../hooks/useInfiniteScroll";
 import BlogCard from "./BlogCard";
 
 const BlogLists = () => {
-  const { items: blogs, loaderRef, hasMore } = useInfiniteScroll("/blogs", 10); // 10 is the limit of blogs to fetch, you can change it to any number you want
+  const { items, loaderRef, hasMore, setShouldFetchBlogs } = useInfiniteScroll(
+    "/blogs",
+    10
+  ); // 10 is the limit of blogs to fetch, you can change it to any number you want
 
-  //This useEffect is used to check if the blogs state has changed and to re-render the component
-  useEffect(() => {}, [blogs]);
+  const { state } = useBlogs();
+  const blogs = state?.blogs || [];
+
+  useEffect(() => {
+    setShouldFetchBlogs(true); // Trigger fetchBlogs after the component has re-rendered
+  }, [items, setShouldFetchBlogs]);
 
   return (
     <div className="space-y-3 md:col-span-5">

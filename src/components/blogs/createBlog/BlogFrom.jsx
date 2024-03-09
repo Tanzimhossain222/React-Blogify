@@ -74,7 +74,6 @@ const BlogForm = ({ EditBlog = null }) => {
         } else {
           id = BlogInfo?.id;
         }
-
         navigate(`/singleBlog/${id}`);
       }
     } catch (err) {

@@ -27,6 +27,10 @@ const SingleBlogPage = () => {
   }
 
   const { singleBlog } = state;
+  
+  if (!singleBlog || Object.keys(singleBlog).length === 0) {
+    return null; // or display a message indicating loading
+  }
 
   return (
     <div>
