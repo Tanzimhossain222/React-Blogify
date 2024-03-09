@@ -55,7 +55,7 @@ const MostPopularBlogs = () => {
       </h3>
 
       <ul className="space-y-5 my-5">
-        {blogs?.length > 1 &&
+        {blogs?.length > 0 &&
           blogs?.map((blog) => (
             <li key={blog.id}>
               <Link to={`/singleBlog/${blog?.id}`}>
